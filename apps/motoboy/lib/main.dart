@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'src/view.dart';
 
+//TODO: (BUGFIX) Se entrar com email de loja voce pode ter acesso aos pedidos abertos...
 // TODO: Validar formulário
 
 //TODO: Tratativa de erros quando o login está incorreto

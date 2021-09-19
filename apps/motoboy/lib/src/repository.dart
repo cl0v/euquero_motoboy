@@ -1,0 +1,56 @@
+import 'package:core/core.dart';
+import 'package:dependences/dependences.dart';
+
+class Repository {
+  late final FirebaseFirestore firestore;
+
+  Repository([FirebaseFirestore? firestore]) {
+    this.firestore = firestore ?? FirebaseFirestore.instance;
+  }
+
+  Future<MotoboyOrderInfo> get(String uid) async {
+    final f = await FirebaseFirestore.instance
+        .collection(UserData.userCollection)
+        .doc(uid)
+        .get();
+    return MotoboyOrderInfo.fromMap(f.data()!..addAll({'id': f.id}));
+  }
+
+  Future<void> acceptOrder(String orderId, Map<String, dynamic> values) =>
+      firestore.collection(Order.collection).doc(orderId).update(values
+        ..addAll({
+          'acceptedAt': Timestamp.now(),
+        }));
+
+  delivered(String orderId, Map<String, dynamic> values) =>
+      firestore.collection(Order.collection).doc(orderId).update(values
+        ..addAll({
+          'deliveredAt': Timestamp.now(),
+        }));
+
+  Stream<List<Map<String, dynamic>>> openOrders() {
+    return firestore
+        .collection(Order.collection)
+        .where('status', isEqualTo: OrderStatus.open.toString())
+        .snapshots()
+        .map((event) => event.docs
+            .map(
+              (e) => e.data()..['id'] = e.id,
+            )
+            .toList());
+  }
+
+  Stream<List<Map<String, dynamic>>> acceptedOrders(String uid) {
+    return firestore
+        .collection(Order.collection)
+        .where('status', isEqualTo: OrderStatus.accepted.toString())
+        .where('motoboy.id', isEqualTo: uid)
+        .snapshots()
+        .map((event) => event.docs
+            .map(
+              (e) => e.data()..['id'] = e.id,
+            )
+            .toList());
+  }
+
+}

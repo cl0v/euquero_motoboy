@@ -1,3 +1,5 @@
+import 'package:authenticator/authenticator.dart';
+import 'package:core/core.dart';
 import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,18 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: const HomePage('XEkD1g7x17bFc2M4JULq6UlwTQl1'),
+      home: const Home(),
     );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LoginPage(onTap: (id){
+        push(context,  HomePage(id), replace: true);
+      });
   }
 }

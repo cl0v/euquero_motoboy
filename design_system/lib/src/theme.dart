@@ -17,7 +17,7 @@ ThemeData get darkTheme => ThemeData(
             backgroundColor: MaterialStateProperty.resolveWith((states) => kOrangeColor),
 
       )),
-          textTheme: TextTheme(),
+          textTheme: const TextTheme(),
         //   ElevatedButton.styleFrom(
         //     onSurface: kWhiteColor,
         //     onPrimary: kWhiteColor,

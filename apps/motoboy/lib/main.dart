@@ -1,9 +1,10 @@
+import 'package:authenticator/authenticator.dart';
+import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:dependences/dependences.dart';
 import 'package:flutter/material.dart';
 
 import 'src/view.dart';
-
 
 // TODO: Validar formulário
 
@@ -17,7 +18,6 @@ https://medium.com/@sarimk80/flutter-segmented-control-and-tab-bar-in-android-an
 https://gallery.flutter.dev/#/
 */
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -25,7 +25,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +33,19 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: HomePage('oGsbzvKrwiaZ9UQn4JFduqn5Oen2'),
+      home: Home(),
     );
   }
+}
+
+class Home extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+  return LoginPage(
+        onTap: (a) {
+          push(context, HomePage(a));
+        },
+      );
+  }
+  
 }

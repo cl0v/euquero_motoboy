@@ -17,7 +17,7 @@ class Bloc {
 
   _init(uid) async {
     //TODO: Esse carinha pode dar error pois pode ser necessário antes de chegar (Posso passar por stream); Ver a necessidade dele...
-    motoboy = await repository.get(uid);
+    repository.get(uid).then((value) => motoboy = value);
 
     final opens = repository
         .openOrders()

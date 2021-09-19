@@ -1,6 +1,7 @@
 name: authenticator
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  core: 
+    path: ../core
 
   firebase_auth: ^3.0.1
 
@@ -24,7 +27,9 @@ dev_dependencies:
 flutter:
 
   # To add assets to your package, add an assets section, like this:
-  # assets:
+  assets:
+     - assets/
+    # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #

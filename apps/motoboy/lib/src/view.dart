@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import 'controller.dart';
+import 'bloc.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -12,11 +12,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final MotoboyOrderController bloc;
+  late final Bloc bloc;
 
   @override
   void initState() {
-    bloc = MotoboyOrderController(widget.uid);
+    bloc = Bloc(widget.uid);
     super.initState();
   }
 

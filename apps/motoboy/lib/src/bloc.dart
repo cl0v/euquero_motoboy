@@ -3,8 +3,8 @@
 import 'package:core/core.dart';
 import 'package:motoboy/src/repository.dart';
 
-class MotoboyOrderController {
-  MotoboyOrderController(String uid) {
+class Bloc {
+  Bloc(String uid) {
     _init(uid);
   }
   late final String uid;

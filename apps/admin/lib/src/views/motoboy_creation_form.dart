@@ -78,7 +78,10 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
       appBar: AppBar(
         title: const Text('Cadastrar Motoboy'),
       ),
-      bottomNavigationBar: BottomNavButton('Cadastrar',createDisbled ? null : onCreatePressed),
+      bottomNavigationBar: BottomNavButton(
+        'Cadastrar',
+        createDisbled ? null : onCreatePressed,
+      ),
       body: Form(
         child: ListView(
           children: [

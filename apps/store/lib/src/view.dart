@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
-import 'package:store/src/controller.dart';
+import 'package:store/src/bloc.dart';
+
+//TODO : Isolar alguns componentes nessa página
 
 class HomePage extends StatefulWidget {
   const HomePage(this.uid, {Key? key}) : super(key: key);
@@ -29,11 +31,11 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController valorController = TextEditingController();
 
-  late final StoreController bloc;
+  late final Bloc bloc;
 
   @override
   void initState() {
-    bloc = StoreController(widget.uid);
+    bloc = Bloc(widget.uid);
     super.initState();
   }
 
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   Order get order => Order(
         valor: valor,
-        frete: bloc.frete.valorTotal(900),
+        frete: bloc.frete.valorTotal(0),
         client: client,
         store: bloc.store,
       );

@@ -32,9 +32,7 @@ class Motoboy extends UserData {
     )..id = map['id'];
   }
 
-  MotoboyOrderInfo get orderInfo =>
-      MotoboyOrderInfo(id: id, name: name, phone: phone);
-
+  @override
   Map<String, dynamic> toMap() {
     return {
       'name': name,

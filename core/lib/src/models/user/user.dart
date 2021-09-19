@@ -31,8 +31,6 @@ abstract class UserData {
 /// Usado para cadastrar o usuário no servidor
   Map<String, dynamic> toMap();
 
-//TODO: Verificar onde esse cara está sendo usado
-  get orderInfo;
 
 //TODO: Fazer em cada um
   // Future createOnFirebase(String email) async {

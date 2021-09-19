@@ -33,9 +33,6 @@ class Store extends UserData {
   final Address address;
 
   @override
-  StoreOrderInfo get orderInfo =>
-      StoreOrderInfo(id: id, name: name, phone: phone, address: address);
-
   Map<String, dynamic> toMap() {
     return {
       'cnpj': document,

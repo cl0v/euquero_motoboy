@@ -1,9 +1,13 @@
 import 'package:core/core.dart';
 import 'package:store/src/repository.dart';
 
-class StoreController {
 
-  StoreController(String uid) {
+// O frete vai ter que ter um bloc próprio para exibir as alterações de preço
+// Bloc nada mais é do que as alterações que acontecem na página
+
+class Bloc {
+
+  Bloc(String uid) {
     _init(uid);
   }
   

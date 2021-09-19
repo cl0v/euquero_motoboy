@@ -10,7 +10,7 @@ class GlobalConfigsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configurações Globais'),
+        title: const Text('Configurações Globais'),
       ),
       body: ListView(
         children: [
@@ -64,7 +64,7 @@ class _TappableListTileState extends State<TappableListTile> {
     return !isEditMode
         ? ListTile(
             title: Text(widget.title),
-            subtitle: Text('Toque para realizar alterações'),
+            subtitle: const Text('Toque para realizar alterações'),
             trailing: Text(widget.value),
             onTap: changeToEditMode,
           )
@@ -74,7 +74,7 @@ class _TappableListTileState extends State<TappableListTile> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: onSave,
-                  child: Text('Salvar'),
+                  child: const Text('Salvar'),
                 ),
               ),
             ],

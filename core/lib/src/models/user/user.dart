@@ -10,8 +10,6 @@ enum UserType { motoboy, store }
 abstract class UserData {
   static String userCollection = 'user';
 
-  late String id;
-
   /// Documento de identificação do usuário (CPF ou CNPJ)
   final String document;
   final String name;
@@ -28,27 +26,7 @@ abstract class UserData {
   });
 
 
-/// Usado para cadastrar o usuário no servidor
+  /// Usado para cadastrar o usuário no servidor
   Map<String, dynamic> toMap();
 
-
-//TODO: Fazer em cada um
-  // Future createOnFirebase(String email) async {
-  //   final uid = await UserAuth().create(email, 'xxxxxx');
-  //   return FirebaseFirestore.instance
-  //       .collection(userCollection)
-  //       .doc(uid)
-  //       .set(toMap());
-  // }
-
-  // static Future<Map<String, dynamic>> fromFirebaseAsMap(String uid) {
-  //   return FirebaseFirestore.instance
-  //       .collection(userCollection)
-  //       .doc(uid)
-  //       .get()
-  //       .then((value) => value.data()!
-  //         ..addEntries([
-  //           MapEntry('id', value.id),
-  //         ]));
-  // }
 }

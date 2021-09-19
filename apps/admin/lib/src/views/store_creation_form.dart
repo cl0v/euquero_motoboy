@@ -1,7 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import 'repository.dart';
+import '../models/store.dart';
+import '../repository.dart';
 
 class FormularioCadastroLoja extends StatefulWidget {
   const FormularioCadastroLoja({Key? key}) : super(key: key);
@@ -50,8 +51,15 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
 
   Repository repository = Repository();
 
+  bool createDisbled = false;
+
   onCreatePressed() async {
+    setState(() {
+      createDisbled = true;
+    });
     await repository.createStore(store, emailController.text);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);
   }
 
@@ -79,9 +87,9 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastrar Loja'),
+        title:const  Text('Cadastrar Loja'),
       ),
-      bottomNavigationBar: BottomNavButton('Cadastrar', onCreatePressed),
+      bottomNavigationBar: BottomNavButton('Cadastrar', createDisbled ? null : onCreatePressed),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Form(
         child: Column(
@@ -89,32 +97,32 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
           children: [
             ...userFields
                 .map((e) => Padding(
-                    child: e, padding: EdgeInsets.symmetric(vertical: 4)))
+                    child: e, padding: const EdgeInsets.symmetric(vertical: 4)))
                 .toList(),
-            Divider(),
+            const Divider(),
             Center(
               child: Title(
                 color: Colors.blue,
-                child: Text('Endereço'),
+                child: const Text('Endereço'),
               ),
             ),
             ...addressFields
                 .map((e) => Padding(
-                    child: e, padding: EdgeInsets.symmetric(vertical: 4)))
+                    child: e, padding:const  EdgeInsets.symmetric(vertical: 4)))
                 .toList(),
 
-            Divider(),
+            const Divider(),
             Center(
               child: Title(
                 color: Colors.blue,
-                child: Text('Dados bancarios'),
+                child: const Text('Dados bancarios'),
               ),
             ),
             Row(
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                      title: Text('Pix'),
+                      title: const Text('Pix'),
                       value: true,
                       groupValue: isPix,
                       onChanged: (v) {
@@ -125,7 +133,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                      title: Text('Conta'),
+                      title: const Text('Conta'),
                       value: false,
                       groupValue: isPix,
                       onChanged: (v) {
@@ -148,7 +156,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
                     children: dbFields
                         .map((e) => Padding(
                             child: e,
-                            padding: EdgeInsets.symmetric(vertical: 4)))
+                            padding: const EdgeInsets.symmetric(vertical: 4)))
                         .toList()),
             // TextFieldWidget(
             //     labelText: 'Referência',

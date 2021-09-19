@@ -2,6 +2,8 @@ import 'package:admin/src/repository.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
+import '../models/motoboy.dart';
+
 class FormularioCadastroMotoboy extends StatefulWidget {
   const FormularioCadastroMotoboy({Key? key}) : super(key: key);
 
@@ -11,20 +13,11 @@ class FormularioCadastroMotoboy extends StatefulWidget {
 }
 
 class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
-  // FormFieldValidator<String>? get formFieldValidator => (s) {
-  //       if (s == 'a') return 'oi';
-  //     };
-
   final TextEditingController nameController = TextEditingController();
-
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController cpfController = TextEditingController();
-
   final TextEditingController phoneController = TextEditingController();
-
   final TextEditingController placaController = TextEditingController();
-
   final TextEditingController taxaController = TextEditingController();
 
   final TextEditingController chavePixController = TextEditingController();
@@ -46,8 +39,15 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
     );
   }
 
+  bool createDisbled = false;
+
   onCreatePressed() async {
+    setState(() {
+      createDisbled = true;
+    });
     await repository.createMotoboy(motoboy, emailController.text);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);
   }
 
@@ -76,28 +76,28 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastrar Motoboy'),
+        title: const Text('Cadastrar Motoboy'),
       ),
-      bottomNavigationBar: BottomNavButton('Cadastrar', onCreatePressed),
+      bottomNavigationBar: BottomNavButton('Cadastrar',createDisbled ? null : onCreatePressed),
       body: Form(
         child: ListView(
           children: [
             ...fields
                 .map((e) => Padding(
-                    child: e, padding: EdgeInsets.symmetric(vertical: 4)))
+                    child: e, padding: const EdgeInsets.symmetric(vertical: 4)))
                 .toList(),
-            Divider(),
+            const Divider(),
             Center(
               child: Title(
                 color: Colors.blue,
-                child: Text('Dados bancarios'),
+                child: const Text('Dados bancarios'),
               ),
             ),
             Row(
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                      title: Text('Pix'),
+                      title: const Text('Pix'),
                       value: true,
                       groupValue: isPix,
                       onChanged: (v) {
@@ -108,7 +108,7 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                      title: Text('Conta'),
+                      title: const Text('Conta'),
                       value: false,
                       groupValue: isPix,
                       onChanged: (v) {
@@ -126,7 +126,7 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
                     children: dbFields
                         .map((e) => Padding(
                             child: e,
-                            padding: EdgeInsets.symmetric(vertical: 4)))
+                            padding: const EdgeInsets.symmetric(vertical: 4)))
                         .toList()),
           ],
         ),

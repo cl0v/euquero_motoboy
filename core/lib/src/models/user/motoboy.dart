@@ -3,48 +3,6 @@ import '../dados_bancarios.dart';
 import 'user.dart';
 
 /// Modelo que será usado para cadastrar o motoboy nos docs
-class Motoboy extends UserData {
-  final String? placaDaMoto;
-
-  Motoboy({
-    required String name,
-    required String cpf,
-    required String phone,
-    required double taxaCobrada,
-    required DadosBancarios dadosBancarios,
-    required this.placaDaMoto,
-  }) : super(
-          name: name,
-          document: cpf,
-          phone: phone,
-          taxaCobrada: taxaCobrada,
-          dadosBancarios: dadosBancarios,
-        );
-
-  factory Motoboy.fromMap(Map<String, dynamic> map) {
-    return Motoboy(
-      name: map['name'],
-      cpf: map['cpf'],
-      phone: map['phone'],
-      placaDaMoto: map['placaDaMoto'],
-      taxaCobrada: map['taxaCobrada'],
-      dadosBancarios: DadosBancarios.fromMap(map['dadosBancarios']),
-    )..id = map['id'];
-  }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'cpf': document,
-      'phone': phone,
-      'placaDaMoto': placaDaMoto,
-      'taxaCobrada': taxaCobrada,
-      'dadosBancarios': dadosBancarios.toMap(),
-    };
-  }
-  
-}
 
 class MotoboyOrderInfo {
   MotoboyOrderInfo({

@@ -1,7 +1,7 @@
 class Address {
+// 21° 51' 14" S / 45° 16' 18" W (Transformar isso??)
   double lat, long;
   final String numero, rua, bairro, referencia, cidade, estado, pais;
-// 21° 51' 14" S / 45° 16' 18" W
   Address({
     required this.numero,
     required this.rua,
@@ -12,8 +12,8 @@ class Address {
     this.pais = 'BR',
     double? lat,
     long,
-  })  : this.lat = lat ?? -21.865733,
-        this.long = long ?? -45.261857;
+  })  : lat = lat ?? -21.865733,
+        long = long ?? -45.261857;
 
   Map<String, dynamic> toMap() {
     return {

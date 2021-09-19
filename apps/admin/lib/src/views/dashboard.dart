@@ -2,17 +2,22 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grid_button/flutter_grid_button.dart';
 
+import 'global_configs.dart';
 import 'motoboy_creation_form.dart';
 import 'store_creation_form.dart';
 
-class AdminDashboardPage extends StatefulWidget {
-  const AdminDashboardPage({Key? key}) : super(key: key);
+class DashboardPage extends StatefulWidget {
+  const DashboardPage(
+    this.uid, {
+    Key? key,
+  }) : super(key: key);
+  final String uid;
 
   @override
-  _AdminDashboardPageState createState() => _AdminDashboardPageState();
+  _DashboardPageState createState() => _DashboardPageState();
 }
 
-class _AdminDashboardPageState extends State<AdminDashboardPage> {
+class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +29,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         onPressed: (v) {
           if (v != null) push(context, v);
         },
-        items: [
+        items: const [
           [
             GridButtonItem(
                 child:
-                    const Text('Cadastrar Motoboy', style: TextStyle(fontSize: 22)),
+                    Text('Cadastrar Motoboy', style: TextStyle(fontSize: 22)),
                 value: FormularioCadastroMotoboy()),
             GridButtonItem(
-                child: const Text('Cadastrar Loja', style: TextStyle(fontSize: 22)),
+                child: Text('Cadastrar Loja', style: TextStyle(fontSize: 22)),
                 value: FormularioCadastroLoja()),
           ],
           // [
@@ -55,7 +60,7 @@ class AdminPanelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text('Funcionalidade ainda não implementada'),
       ),

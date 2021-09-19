@@ -2,11 +2,15 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import 'bloc.dart';
+import 'components/request.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
 
-  const HomePage(this.uid,{Key? key, }) : super(key: key);
+  const HomePage(
+    this.uid, {
+    Key? key,
+  }) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -41,16 +45,17 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 );
               final list = snapshot.data ?? [];
-              return Column(
-                  children: list
-                      .map(
-                        (e) => _AcceptedOrderTileWidget(
-                          e.client.address.toString(),
-                          e.client.name,
-                          () => bloc.finishOrder(e),
-                        ),
-                      )
-                      .toList());
+              return Column(children: list.map((e) => AcceptedField()).toList()
+                  //  list
+                  //     .map(
+                  //       (e) => AcceptedOrderTileWidget(
+                  //         e.client.address.toString(),
+                  //         e.client.name,
+                  //         () => bloc.finishOrder(e),
+                  //       ),
+                  //     )
+                  //     .toList(),
+                  );
             },
           ),
           Text('Pedidos abertos'),
@@ -64,66 +69,25 @@ class _HomePageState extends State<HomePage> {
               final list = snapshot.data ?? [];
               return Expanded(
                 child: ListView(
-                  children: list
-                      .map(
-                        (e) => _OpenOrderTileWidget(
-                          e.store.name,
-                          e.store.address.toString(),
-                          () => bloc.acceptOrder(e),
-                        ),
-                      )
-                      .toList(),
-                ),
+                    children: list
+                        .map(
+                          (e) => RequestField(),
+                        )
+                        .toList()
+                    // list
+                    //     .map(
+                    //       (e) => OpenOrderTileWidget(
+                    //         e.store.name,
+                    //         e.store.address.toString(),
+                    //         () => bloc.acceptOrder(e),
+                    //       ),
+                    //     )
+                    //     .toList(),
+                    ),
               );
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AcceptedOrderTileWidget extends StatelessWidget {
-  const _AcceptedOrderTileWidget(this.title, this.subtitle, this.onPressed,
-      {Key? key})
-      : super(key: key);
-  final String title;
-  final String subtitle;
-  final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('Entregar em: $title'),
-      subtitle: Text('Chamar por $subtitle'),
-      trailing: ElevatedButton(
-        onPressed: onPressed,
-        child: Text('Entregue'),
-      ),
-    );
-  }
-}
-
-class _OpenOrderTileWidget extends StatelessWidget {
-  const _OpenOrderTileWidget(this.title, this.subtitle, this.onPressed,
-      {Key? key})
-      : super(key: key);
-  final String title;
-  final String subtitle;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('Buscar em: $title'),
-      subtitle: Text(subtitle),
-      trailing: ElevatedButton(
-        style: ButtonStyle(
-            shape: MaterialStateProperty.all(RoundedRectangleBorder()),
-            textStyle: MaterialStateProperty.all(TextStyle(
-              color: Colors.white,
-            ))),
-        onPressed: onPressed,
-        child: Text('Aceitar'),
       ),
     );
   }

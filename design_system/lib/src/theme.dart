@@ -6,13 +6,24 @@ ThemeData get darkTheme => ThemeData(
       primaryColor: kOrangeColor,
       colorScheme: const ColorScheme.dark().copyWith(
         secondary: kOrangeColor,
+        primary: Colors.white
       ),
       primarySwatch: Colors.deepOrange, // Testar isso
       buttonTheme: const ButtonThemeData(buttonColor: kOrangeColor),
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-        primary: kOrangeColor,
+          style: ButtonStyle(
+            
+            foregroundColor: MaterialStateProperty.resolveWith((states) => kWhiteColor),
+            backgroundColor: MaterialStateProperty.resolveWith((states) => kOrangeColor),
+
       )),
+          textTheme: TextTheme(),
+        //   ElevatedButton.styleFrom(
+        //     onSurface: kWhiteColor,
+        //     onPrimary: kWhiteColor,
+        //     textStyle: TextStyle(color: Colors.white,),
+        // primary: kOrangeColor,
+        
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           foregroundColor:

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-  return LoginPage(
+  return AuthenticationPage(
         onTap: (a) {
           return HomePage(a);
         },

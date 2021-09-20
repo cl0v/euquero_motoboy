@@ -1,4 +1,3 @@
-
 import '../../core.dart';
 
 /*
@@ -18,7 +17,6 @@ enum OrderStatus {
 class Order {
   static const String collection = 'order';
 
-  
   final double valor;
   final double frete;
   final OrderStatus status;
@@ -31,7 +29,7 @@ class Order {
     required this.frete,
     required this.store,
     required this.client,
-  })  : status = OrderStatus.open;
+  }) : status = OrderStatus.open;
 
   Map<String, dynamic> toMap() {
     return {
@@ -86,11 +84,15 @@ class OpenOrder extends OrderWithId {
 ///
 class AcceptedOrder extends OrderWithId {
   ClientModel client;
+  StoreOrderInfo store;
+  double total;
   //Adicionar o valor total também
 
   AcceptedOrder({
     required String id,
     required this.client,
+    required this.store,
+    required this.total,
   }) : super(id: id, status: OrderStatus.accepted);
 
   Map<String, dynamic> delivered() {
@@ -102,6 +104,8 @@ class AcceptedOrder extends OrderWithId {
   factory AcceptedOrder.fromMap(Map<String, dynamic> map) {
     return AcceptedOrder(
       id: map['id'],
+      total: ((map['valor'] as num) + (map['frete']as num)).toDouble() ,
+      store: StoreOrderInfo.fromMap(map['store']),
       client: ClientModel.fromMap(map['client']),
     );
   }

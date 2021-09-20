@@ -2,7 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import 'bloc.dart';
-import 'components/request.dart';
+import 'components/accepted_order_widget.dart';
+import 'components/open_order_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -45,17 +46,21 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 );
               final list = snapshot.data ?? [];
-              return Column(children: list.map((e) => AcceptedField()).toList()
-                  //  list
-                  //     .map(
-                  //       (e) => AcceptedOrderTileWidget(
-                  //         e.client.address.toString(),
-                  //         e.client.name,
-                  //         () => bloc.finishOrder(e),
-                  //       ),
-                  //     )
-                  //     .toList(),
-                  );
+              return Column(
+                children: list
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: AcceptedOrderTileWidget(
+                            total: e.total.toStringAsFixed(2),
+                            clientTitle: e.client.name,
+                            clientAddress: e.client.address.toString(),
+                            storeTitle: e.store.name,
+                            storeAddress: e.store.address.toString(),
+                            onPressed: () => bloc.finishOrder(e),
+                          ),
+                        ))
+                    .toList(),
+              );
             },
           ),
           Text('Pedidos abertos'),
@@ -71,42 +76,21 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                     children: list
                         .map(
-                          (e) => RequestField(),
+                          (e) => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: OpenOrderTileWidget(
+                              e.store.name,
+                              e.store.address.toString(),
+                              () => bloc.acceptOrder(e),
+                            ),
+                          ),
                         )
-                        .toList()
-                    // list
-                    //     .map(
-                    //       (e) => OpenOrderTileWidget(
-                    //         e.store.name,
-                    //         e.store.address.toString(),
-                    //         () => bloc.acceptOrder(e),
-                    //       ),
-                    //     )
-                    //     .toList(),
-                    ),
+                        .toList()),
               );
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _OrderTileWidget extends StatelessWidget {
-  const _OrderTileWidget(this.title, this.btnText, this.onPressed, {Key? key})
-      : super(key: key);
-  final String title;
-  final String btnText;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      trailing: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(btnText),
       ),
     );
   }

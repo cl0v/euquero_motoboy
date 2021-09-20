@@ -3,4 +3,4 @@ library authenticator;
 export 'package:firebase_auth/firebase_auth.dart' hide FirebaseAuth;
 export 'src/user_auth.dart';
 
-export 'src/login_view.dart';
+export 'src/authentication.dart';

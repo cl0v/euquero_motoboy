@@ -1,31 +1,20 @@
 import 'package:authenticator/src/user_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.onTap}) : super(key: key);
+class AuthenticationPage extends StatelessWidget {
+  AuthenticationPage({Key? key, required this.onTap}) : super(key: key);
   final Widget Function(String id) onTap;
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final UserAuth auth = UserAuth();
 
-  UserAuth auth = UserAuth();
-
-  @override
-  void initState() {
-    super.initState();
-    if (auth.isUserAuthenticated) widget.onTap(auth.uid);
-  }
-
-  onLogin() async {
+  onLogin(context) async {
     final id = await auth.login(emailController.text, passwordController.text);
-    // if (id != null) return widget.onTap(id);
-    return ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Login incorreto!')));
+    if (id == null)
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Login incorreto!')));
   }
 
   @override
@@ -33,12 +22,6 @@ class _LoginPageState extends State<LoginPage> {
     return StreamBuilder<String?>(
         stream: auth.uidState,
         builder: (context, snapshot) {
-          // if (!snapshot.hasData)
-          //   return Scaffold(
-          //     body: Center(
-          //       child: CircularProgressIndicator(),
-          //     ),
-          //   );
           if (snapshot.data == null) {
             return Scaffold(
               body: SafeArea(
@@ -85,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                             NewButton(
                               font_size: 14,
                               text: "Login",
-                              onTap: onLogin,
+                              onTap: () => onLogin(context),
                             ),
                             SizedBox(
                               height: 50,
@@ -112,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
               )),
             );
           }
-          return widget.onTap(snapshot.data!);
+          return onTap(snapshot.data!);
         });
   }
 }

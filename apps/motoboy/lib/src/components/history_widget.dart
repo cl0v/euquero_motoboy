@@ -1,21 +1,9 @@
+
 import 'package:flutter/material.dart';
 
-class AcceptedOrderTileWidget extends StatelessWidget {
-  const AcceptedOrderTileWidget(
-      {Key? key,
-      required this.storeTitle,
-      required this.storeAddress,
-      required this.clientTitle,
-      required this.clientAddress,
-      required this.total,
-      required this.onPressed})
-      : super(key: key);
-  final String storeTitle;
-  final String storeAddress;
-  final String clientTitle;
-  final String clientAddress;
-  final String total;
-  final VoidCallback onPressed;
+
+class HistoricField extends StatelessWidget {
+  const HistoricField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +33,11 @@ class AcceptedOrderTileWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
-                      child: Text("Aceito"),
+                      child: Text("Entregue"),
                     ),
                   ),
                   NewText(
-                    text: "Valor: R\$$total",
+                    text: "Valor: 80,00",
                     size: 15,
                     color: Colors.black,
                     bold: FontWeight.bold,
@@ -60,7 +48,7 @@ class AcceptedOrderTileWidget extends StatelessWidget {
                 height: 10,
               ),
               NewText(
-                text: "Endereço de coleta:",
+                text: "Entregue em:",
                 size: 16,
                 color: Colors.orange,
                 bold: FontWeight.bold,
@@ -69,35 +57,17 @@ class AcceptedOrderTileWidget extends StatelessWidget {
                 height: 4,
               ),
               NewText(
-                text: "Loja: $storeTitle",
+                text: "02/09/2021",
                 size: 15,
                 color: Colors.black,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  NewText(
-                    text: "Pegar: $storeAddress",
-                    size: 15,
-                    color: Colors.black,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: NewText(
-                      text: "Entregue",
-                      size: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: onPressed,
-                    child: NewText(
-                      text: "Cancelar",
-                      size: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+              NewText(
+                text: "Padaria Cambuquira",
+                size: 15,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),

@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoginPage(onTap: (id) {
+    return AuthenticationPage(onTap: (id) {
       return DashboardPage(id);
     });
   }

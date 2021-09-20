@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.onTap}) : super(key: key);
-  final Function(String id) onTap;
+  final Widget Function(String id) onTap;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -15,86 +15,105 @@ class _LoginPageState extends State<LoginPage> {
 
   UserAuth auth = UserAuth();
 
+  @override
+  void initState() {
+    super.initState();
+    if (auth.isUserAuthenticated) widget.onTap(auth.uid);
+  }
+
   onLogin() async {
     final id = await auth.login(emailController.text, passwordController.text);
-    if (id != null) return widget.onTap(id);
+    // if (id != null) return widget.onTap(id);
     return ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Login incorreto!')));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10, left: 10),
-              child: Container(
-                width: 480,
-                // Não é uma pratica muito boa, mas deixa ai por enquanto
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    return StreamBuilder<String?>(
+        stream: auth.uidState,
+        builder: (context, snapshot) {
+          // if (!snapshot.hasData)
+          //   return Scaffold(
+          //     body: Center(
+          //       child: CircularProgressIndicator(),
+          //     ),
+          //   );
+          if (snapshot.data == null) {
+            return Scaffold(
+              body: SafeArea(
+                  child: SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Stack(
-                      children: [
-                        Image.asset(
-                          "login.png",
-                          fit: BoxFit.fill,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10, left: 10),
+                      child: Container(
+                        width: 480,
+                        // Não é uma pratica muito boa, mas deixa ai por enquanto
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Image.asset(
+                                  "login.png",
+                                  fit: BoxFit.fill,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 100,
+                            ),
+                            NewTextField(
+                              controller: emailController,
+                              obscure: false,
+                              hint: "Digite seu email",
+                              label: "Email",
+                            ),
+                            NewTextField(
+                              controller: passwordController,
+                              obscure: true,
+                              hint: "Digite sua senha",
+                              label: "Senha",
+                            ),
+                            Divider(
+                              height: 50,
+                            ),
+                            NewButton(
+                              font_size: 14,
+                              text: "Login",
+                              onTap: onLogin,
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Não tem conta?   "),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Cadastrar!",
+                                    style: TextStyle(color: Colors.orange),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 100,
-                    ),
-                    NewTextField(
-                      controller: emailController,
-                      obscure: false,
-                      hint: "Digite seu email",
-                      label: "Email",
-                    ),
-                    NewTextField(
-                      controller: passwordController,
-                      obscure: true,
-                      hint: "Digite sua senha",
-                      label: "Senha",
-                    ),
-                    Divider(
-                      height: 50,
-                    ),
-                    NewButton(
-                      font_size: 14,
-                      text: "Login",
-                      onTap: onLogin,
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Não tem conta?   "),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Cadastrar!",
-                            style: TextStyle(color: Colors.orange),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      )),
-    );
+              )),
+            );
+          }
+          return widget.onTap(snapshot.data!);
+        });
   }
 }
 

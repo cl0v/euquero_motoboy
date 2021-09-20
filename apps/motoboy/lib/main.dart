@@ -44,7 +44,7 @@ class Home extends StatelessWidget{
   Widget build(BuildContext context) {
   return LoginPage(
         onTap: (a) {
-          push(context, HomePage(a));
+          return HomePage(a);
         },
       );
   }

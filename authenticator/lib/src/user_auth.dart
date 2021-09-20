@@ -20,6 +20,8 @@ class UserAuth {
 
   String get uid => auth.currentUser?.uid ?? '';
 
+  bool get isUserAuthenticated => auth.currentUser?.uid != null;
+
   Future<void> logout() {
     return auth.signOut();
   }

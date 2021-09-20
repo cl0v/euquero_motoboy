@@ -80,8 +80,10 @@ class _HomePageState extends State<HomePage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: OpenOrderTileWidget(
+
                               e.store.name,
                               e.store.address.toString(),
+                              e.total.toStringAsFixed(2),
                               () => bloc.acceptOrder(e),
                             ),
                           ),

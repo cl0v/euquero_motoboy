@@ -6,7 +6,7 @@ As ordens abertas são modelos exclusivos para o motoboy
  > O Motoboy tem acesso a diferentes tipos de modelos que definem eventos.
 
 */
-
+//TODO: Fazer apenas um modelo de ordem aceita(Muitas informaçoes em comum, apenas revelar o cliente depois)
 enum OrderStatus {
   open,
   accepted,
@@ -56,10 +56,12 @@ abstract class OrderWithId {
 /// Informações sobre a ordem em aberto (Pode aceitar)
 class OpenOrder extends OrderWithId {
   final StoreOrderInfo store;
+  double total;
 
   OpenOrder({
     required this.store,
     required String id,
+    required this.total,
   }) : super(id: id, status: OrderStatus.open);
 
 // Esse cara retorna um modelo para ser salvo no firebase
@@ -73,6 +75,7 @@ class OpenOrder extends OrderWithId {
   factory OpenOrder.fromMap(Map<String, dynamic> map) {
     return OpenOrder(
       id: map['id'],
+      total: ((map['valor'] as num) + (map['frete']as num)).toDouble() ,
       store: StoreOrderInfo.fromMap(map['store']),
     );
   }

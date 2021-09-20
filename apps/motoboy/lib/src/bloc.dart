@@ -36,7 +36,7 @@ class Bloc {
   }
 
   finishOrder(AcceptedOrder order) {
-    return repository.delivered(order.id, order.delivered());
+    return repository.deliverOrder(order.id, order.delivered());
   }
 
   dispose() {

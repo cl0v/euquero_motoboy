@@ -23,7 +23,7 @@ class AcceptedOrderTileWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         width: MediaQuery.of(context).size.width - 10,
-        height: 130,
+        height: 220,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -73,30 +73,44 @@ class AcceptedOrderTileWidget extends StatelessWidget {
                 size: 15,
                 color: Colors.black,
               ),
+              NewText(
+                text: "Pegar: $storeAddress",
+                size: 15,
+                color: Colors.black,
+              ),
+              Divider(
+                height: 15,
+              ),
+              NewText(
+                text: "Endereço de entrega:",
+                size: 16,
+                color: Colors.orange,
+                bold: FontWeight.bold,
+              ),
+              Divider(
+                height: 10,
+              ),
+              NewText(
+                text: "$clientTitle",
+                size: 15,
+                color: Colors.black,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   NewText(
-                    text: "Pegar: $storeAddress",
+                    text: "Entregar: $clientAddress",
                     size: 15,
                     color: Colors.black,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: NewText(
-                      text: "Entregue",
-                      size: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                  ElevatedButton(
                     onPressed: onPressed,
                     child: NewText(
-                      text: "Cancelar",
-                      size: 12,
+                      text: "entregar",
                       color: Colors.white,
+                      bold: FontWeight.bold,
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
@@ -106,7 +120,6 @@ class AcceptedOrderTileWidget extends StatelessWidget {
     );
   }
 }
-
 class NewText extends StatelessWidget {
   final text;
   final color;

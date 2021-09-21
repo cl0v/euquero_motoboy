@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:motoboy/src/history/view.dart';
 
 import 'bloc.dart';
-import '../components/accepted_order_widget.dart';
-import '../components/open_order_widget.dart';
+import 'components/accepted_order_widget.dart';
+import 'components/open_order_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;

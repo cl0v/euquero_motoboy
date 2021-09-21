@@ -58,12 +58,12 @@ class Repository {
             .toList());
   }
 
-  /// Pedidos finalizados
+  /// Ultimos 10 pedidos finalizados
    Stream<List<Map<String, dynamic>>> deliveredOrders(String uid) {
     return firestore
         .collection(Order.collection)
         .where('status', isEqualTo: OrderStatus.delivered.toString())
-        .where('motoboy.id', isEqualTo: uid)
+        .where('motoboy.id', isEqualTo: uid).limit(10)
         .snapshots()
         .map((event) => event.docs
             .map(

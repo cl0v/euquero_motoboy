@@ -1,9 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:motoboy/src/history/view.dart';
 
 import 'bloc.dart';
-import 'components/accepted_order_widget.dart';
-import 'components/open_order_widget.dart';
+import '../components/accepted_order_widget.dart';
+import '../components/open_order_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -17,11 +18,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final Bloc bloc;
+  late final HomeBloc bloc;
 
   @override
   void initState() {
-    bloc = Bloc(widget.uid);
+    bloc = HomeBloc(widget.uid);
     super.initState();
   }
 
@@ -34,7 +35,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          TextButton(onPressed: (){
+            push(context, HistoryPage(widget.uid));
+          }, child: Text('HISTORICO'))
+        ],
+      ),
       body: Column(
         children: [
           Text('Pedidos aceitos'),

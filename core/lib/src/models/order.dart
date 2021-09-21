@@ -75,7 +75,7 @@ class OpenOrder extends OrderWithId {
   factory OpenOrder.fromMap(Map<String, dynamic> map) {
     return OpenOrder(
       id: map['id'],
-      total: ((map['valor'] as num) + (map['frete']as num)).toDouble() ,
+      total: ((map['valor'] as num) + (map['frete'] as num)).toDouble(),
       store: StoreOrderInfo.fromMap(map['store']),
     );
   }
@@ -107,7 +107,7 @@ class AcceptedOrder extends OrderWithId {
   factory AcceptedOrder.fromMap(Map<String, dynamic> map) {
     return AcceptedOrder(
       id: map['id'],
-      total: ((map['valor'] as num) + (map['frete']as num)).toDouble() ,
+      total: ((map['valor'] as num) + (map['frete'] as num)).toDouble(),
       store: StoreOrderInfo.fromMap(map['store']),
       client: ClientModel.fromMap(map['client']),
     );
@@ -116,12 +116,24 @@ class AcceptedOrder extends OrderWithId {
 
 /// Modelo para uma ordem entregue
 class DeliveredOrder extends OrderWithId {
+  final ClientModel client;
+  final double total;
   DeliveredOrder({
     required String id,
+    required this.client,
+    required this.total,
   }) : super(
           id: id,
           status: OrderStatus.delivered,
         );
+
+  factory DeliveredOrder.fromMap(Map<String, dynamic> map) {
+    return DeliveredOrder(
+      id: map['id'],
+      total: ((map['valor'] as num) + (map['frete'] as num)).toDouble(),
+      client: ClientModel.fromMap(map['client']),
+    );
+  }
 }
 
 /* Dados da ordem

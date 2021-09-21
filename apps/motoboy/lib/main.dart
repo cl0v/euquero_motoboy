@@ -4,7 +4,7 @@ import 'package:design_system/design_system.dart';
 import 'package:dependences/dependences.dart';
 import 'package:flutter/material.dart';
 
-import 'src/view.dart';
+import 'src/home/view.dart';
 
 //TODO: (BUGFIX) Se entrar com email de loja voce pode ter acesso aos pedidos abertos...
 // TODO: Validar formulário

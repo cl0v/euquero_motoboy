@@ -26,69 +26,53 @@ class AuthenticationPage extends StatelessWidget {
             return Scaffold(
               body: SafeArea(
                   child: SingleChildScrollView(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, left: 10),
-                      child: Container(
-                        width: 480,
-                        // Não é uma pratica muito boa, mas deixa ai por enquanto
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Stack(
-                              children: [
-                                Image.asset(
-                                  "login.png",
-                                  fit: BoxFit.fill,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 100,
-                            ),
-                            NewTextField(
-                              controller: emailController,
-                              obscure: false,
-                              hint: "Digite seu email",
-                              label: "Email",
-                            ),
-                            NewTextField(
-                              controller: passwordController,
-                              obscure: true,
-                              hint: "Digite sua senha",
-                              label: "Senha",
-                            ),
-                            Divider(
-                              height: 50,
-                            ),
-                            NewButton(
-                              font_size: 14,
-                              text: "Login",
-                              onTap: () => onLogin(context),
-                            ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Não tem conta?   "),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "Cadastrar!",
-                                    style: TextStyle(color: Colors.orange),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        Image.asset(
+                          "assets/login.png",
+                          fit: BoxFit.fill,
                         ),
-                      ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                    NewTextField(
+                      controller: emailController,
+                      obscure: false,
+                      hint: "Digite seu email",
+                      label: "Email",
+                    ),
+                    NewTextField(
+                      controller: passwordController,
+                      obscure: true,
+                      hint: "Digite sua senha",
+                      label: "Senha",
+                    ),
+                    Divider(
+                      height: 50,
+                    ),
+                    NewButton(
+                      fontSize: 14,
+                      text: "Login",
+                      onTap: () => onLogin(context),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Não tem conta?   "),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Cadastrar!",
+                            style: TextStyle(color: Colors.orange),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -119,11 +103,11 @@ class NewText extends StatelessWidget {
 }
 
 class NewButton extends StatelessWidget {
-  final text;
-  final font_size;
-  final onTap;
+  final String text;
+  final double fontSize;
+  final VoidCallback onTap;
 
-  const NewButton({Key? key, this.text, this.font_size, this.onTap})
+  const NewButton({Key? key, required this.text, required this.fontSize, required this.onTap})
       : super(key: key);
 
   @override
@@ -132,7 +116,7 @@ class NewButton extends StatelessWidget {
       height: 50,
       width: 120,
       child: ElevatedButton(
-        child: Text(text.toUpperCase(), style: TextStyle(fontSize: font_size)),
+        child: Text(text.toUpperCase(), style: TextStyle(fontSize: fontSize)),
         style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),

@@ -32,9 +32,12 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
   bool isPix = true;
 
   DadosBancarios get dadosBancarios => isPix
-      ? DadosBancarios.pix(chavePixController.text)
-      : DadosBancarios.conta(bancoPixController.text, agenciaPixController.text,
-          contaPixController.text);
+      ? Pix(chavePixController.text)
+      : Conta(
+          bancoPixController.text,
+          agenciaPixController.text,
+          contaPixController.text,
+        );
 
   Store get store => Store(
         name: nameController.text,
@@ -87,9 +90,10 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
 
     return Scaffold(
       appBar: AppBar(
-        title:const  Text('Cadastrar Loja'),
+        title: const Text('Cadastrar Loja'),
       ),
-      bottomNavigationBar: BottomNavButton('Cadastrar', createDisbled ? null : onCreatePressed),
+      bottomNavigationBar:
+          BottomNavButton('Cadastrar', createDisbled ? null : onCreatePressed),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Form(
         child: Column(
@@ -108,7 +112,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
             ),
             ...addressFields
                 .map((e) => Padding(
-                    child: e, padding:const  EdgeInsets.symmetric(vertical: 4)))
+                    child: e, padding: const EdgeInsets.symmetric(vertical: 4)))
                 .toList(),
 
             const Divider(),

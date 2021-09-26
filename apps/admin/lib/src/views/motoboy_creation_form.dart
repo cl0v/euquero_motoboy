@@ -54,8 +54,8 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
   bool isPix = true;
 
   DadosBancarios get dadosBancarios => isPix
-      ? DadosBancarios.pix(chavePixController.text)
-      : DadosBancarios.conta(bancoPixController.text, agenciaPixController.text,
+      ? Pix(chavePixController.text)
+      : Conta(bancoPixController.text, agenciaPixController.text,
           contaPixController.text);
 
   @override

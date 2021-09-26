@@ -1,38 +1,21 @@
 enum TipoTransferencia {
-  Pix,
-  Conta,
+  pix,
+  conta,
 }
 // Quando não faz diferença qual dos dois é (na pratica, pode ser usado esse factory)
 abstract class DadosBancarios {
   final TipoTransferencia type;
   DadosBancarios(this.type);
 
-  factory DadosBancarios.fromMap(Map<String, dynamic> map) {
-    switch (map['type']) {
-      case 'TipoTransferencia.Pix':
-        return Pix.fromMap(map);
-      case 'TipoTransferencia.Conta':
-        return Conta.fromMap(map);
-      default:
-    }
-    return DadosBancarios.pix(map['chave']);
-  }
-
-  factory DadosBancarios.pix(String chave) => Pix(chave);
-
-  factory DadosBancarios.conta(String banco, String agencia, String conta) =>
-      Conta(banco, agencia, conta);
-
   Map<String, dynamic> toMap();
 
-  String toString();
 }
 
 class Pix extends DadosBancarios {
   final String chave;
   //TODO: A chave pix pode ser telefone, cpf, email, etc....
 
-  Pix(this.chave) : super(TipoTransferencia.Pix);
+  Pix(this.chave) : super(TipoTransferencia.pix);
 
   @override
   Map<String, dynamic> toMap() {
@@ -57,7 +40,7 @@ class Conta extends DadosBancarios {
   final String agencia;
   final String conta;
 
-  Conta(this.banco, this.agencia, this.conta) : super(TipoTransferencia.Conta);
+  Conta(this.banco, this.agencia, this.conta) : super(TipoTransferencia.conta);
 
   @override
   Map<String, dynamic> toMap() {

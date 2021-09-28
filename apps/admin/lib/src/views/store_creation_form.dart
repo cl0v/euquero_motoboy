@@ -60,7 +60,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
     setState(() {
       createDisbled = true;
     });
-    await repository.createStore(store, emailController.text);
+    await repository.create(store, emailController.text);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);

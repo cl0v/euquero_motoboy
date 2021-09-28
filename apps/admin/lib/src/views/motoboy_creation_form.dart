@@ -45,7 +45,7 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
     setState(() {
       createDisbled = true;
     });
-    await repository.createMotoboy(motoboy, emailController.text);
+    await repository.create(motoboy, emailController.text);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);

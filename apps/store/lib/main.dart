@@ -3,6 +3,7 @@ import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
+import 'src/pages/address.dart';
 import 'src/view.dart';
 
 Future<void> main() async {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: const Home(),
+      home: const AddressPage(),
     );
   }
 }

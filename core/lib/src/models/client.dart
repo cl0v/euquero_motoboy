@@ -1,14 +1,14 @@
-
 import 'address.dart';
 
 class ClientModel {
   final String name;
   final String phone;
   final Address address;
+
   ClientModel({
     required this.name,
     required this.phone,
-    required this.address,
+    required this.address
   });
 
   Map<String, dynamic> toMap() {

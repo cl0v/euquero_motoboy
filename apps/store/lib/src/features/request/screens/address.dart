@@ -1,6 +1,9 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:store/src/pages/price.dart';
+import 'package:store/src/features/request/bloc.dart';
+import 'package:store/src/features/request/provider.dart';
+import 'package:store/src/features/request/states.dart';
+import 'price.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -19,6 +22,23 @@ class _AddressPageState extends State<AddressPage> {
   final TextEditingController addressReferenceController =
       TextEditingController();
 
+  late RequestBloc bloc;
+
+  @override
+  void didChangeDependencies() {
+    bloc = RequestProvider.of(context)!.bloc;
+    super.didChangeDependencies();
+  }
+
+  onNext() {
+    bloc.address = Address(
+      numero: addressNumberController.text,
+      rua: addressStreetController.text,
+      bairro: addressBairroController.text,
+    );
+    bloc.add(RequestState.price);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +46,7 @@ class _AddressPageState extends State<AddressPage> {
           title: const Text('Para onde?'),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomNavButton(
-          'Próximo',
-          () {
-            push(context, const PricesPage());
-          },
-        ),
+        bottomNavigationBar: BottomNavButton('Próximo', onNext),
         body: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 16),
           child: Center(

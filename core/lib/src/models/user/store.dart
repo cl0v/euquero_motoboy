@@ -1,7 +1,5 @@
 
 import '../address.dart';
-import '../dados_bancarios.dart';
-import 'user.dart';
 
 
 class StoreOrderInfo {

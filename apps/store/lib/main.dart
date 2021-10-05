@@ -2,9 +2,11 @@ import 'package:authenticator/authenticator.dart';
 import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:store/src/features/request/bloc.dart';
+import 'package:store/src/features/request/provider.dart';
 
-import 'src/pages/address.dart';
-import 'src/view.dart';
+import 'src/features/request/repository.dart';
+import 'src/features/request/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,18 +25,15 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: const AddressPage(),
+      home: AuthenticationPage(onTap: (id) {
+        return RequestProvider(
+          child: const RequestPage(),
+          bloc: RequestBloc(
+            id,
+            repository: RequestRepository(),
+          ),
+        );
+      }),
     );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AuthenticationPage(onTap: (id) {
-      return HomePage(id);
-    });
   }
 }

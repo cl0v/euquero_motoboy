@@ -1,6 +1,9 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:store/src/features/request/states.dart';
 
+import '../bloc.dart';
+import '../provider.dart';
 import 'client.dart';
 
 class TotalPage extends StatefulWidget {
@@ -11,6 +14,18 @@ class TotalPage extends StatefulWidget {
 }
 
 class _TotalPageState extends State<TotalPage> {
+  late RequestBloc bloc;
+
+  @override
+  void didChangeDependencies() {
+    bloc = RequestProvider.of(context)!.bloc;
+    super.didChangeDependencies();
+  }
+
+  onNext() {
+    bloc.add(RequestState.client);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +33,17 @@ class _TotalPageState extends State<TotalPage> {
         title: const Text('Total'),
         centerTitle: true,
       ),
-      bottomNavigationBar: BottomNavButton('Confirmar', () {
-        push(context, const ClientPage());
-      }),
+      bottomNavigationBar: BottomNavButton('Confirmar', onNext),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('Valor do produto'),
-                Text('R\$10,00'),
+              children: [
+                const Text('Valor do produto'),
+                Text('R\$${bloc.value.toStringAsFixed(2)}'),
               ],
             ),
             const SizedBox(
@@ -39,9 +51,9 @@ class _TotalPageState extends State<TotalPage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('Valor do frete'),
-                Text('+ R\$4,00'),
+              children: [
+                const Text('Valor do frete'),
+                Text('+ R\$${bloc.valorFrete.toStringAsFixed(2)}'),
               ],
             ),
             const Divider(),
@@ -50,7 +62,7 @@ class _TotalPageState extends State<TotalPage> {
               children: [
                 const Text('Valor final'),
                 Text(
-                  'R\$14,00',
+                  'R\$${bloc.total.toStringAsFixed(2)}',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ],

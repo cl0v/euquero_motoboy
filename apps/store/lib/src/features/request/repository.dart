@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 import 'package:dependences/dependences.dart';
 
-class Repository {
+class RequestRepository {
   late final FirebaseFirestore firestore;
 
-  Repository([FirebaseFirestore? firestore]) {
+  RequestRepository([FirebaseFirestore? firestore]) {
     this.firestore = firestore ?? FirebaseFirestore.instance;
   }
 

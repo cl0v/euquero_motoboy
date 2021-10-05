@@ -1,7 +1,7 @@
 
 class Frete {
-  final double fixo;
-  final double variavel;
+  final num fixo;
+  final num variavel;
 
   Frete({
     required this.fixo,

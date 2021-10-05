@@ -17,24 +17,26 @@ enum OrderStatus {
 class Order {
   static const String collection = 'order';
 
-  final double valor;
-  final double frete;
+  final double valorPedido;
+  final double valorFrete;
   final OrderStatus status;
 
   final StoreOrderInfo store;
   final ClientModel client;
+  
+
 
   Order({
-    required this.valor,
-    required this.frete,
+    required this.valorPedido,
+    required this.valorFrete,
     required this.store,
     required this.client,
   }) : status = OrderStatus.open;
 
   Map<String, dynamic> toMap() {
     return {
-      'valor': valor,
-      'frete': frete,
+      'valor': valorPedido,
+      'frete': valorFrete,
       'status': status.toString(),
       'client': client.toMap(),
       'store': store.toMap(),

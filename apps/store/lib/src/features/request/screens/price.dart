@@ -1,6 +1,9 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:store/src/pages/total.dart';
+import 'package:store/src/features/request/states.dart';
+import '../bloc.dart';
+import '../provider.dart';
+import 'total.dart';
 
 class PricesPage extends StatefulWidget {
   const PricesPage({Key? key}) : super(key: key);
@@ -11,6 +14,24 @@ class PricesPage extends StatefulWidget {
 
 class _PricesPageState extends State<PricesPage> {
   final TextEditingController valorController = TextEditingController();
+
+  late final RequestBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    bloc = RequestProvider.of(context)!.bloc;
+    super.didChangeDependencies();
+  }
+
+  onNext() {
+    bloc.value = double.parse(valorController.text);
+    bloc.add(RequestState.total);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +49,7 @@ class _PricesPageState extends State<PricesPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavButton('Próximo', () {
-        push(context, const TotalPage());
-      }),
+      bottomNavigationBar: BottomNavButton('Próximo', onNext),
     );
   }
 }

@@ -29,6 +29,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthenticationPage(onTap: (id) async{
+      //TODO: Implementar sistema de login por franquia
       return DashboardPage(id);
     });
   }

@@ -6,13 +6,11 @@ import 'bloc.dart';
 import 'components/accepted_order_widget.dart';
 import 'components/open_order_widget.dart';
 
-
-
 class HomePage extends StatefulWidget {
-  final String uid;
+  final HomeBloc bloc;
 
-  const HomePage(
-    this.uid, {
+  const HomePage({
+    required this.bloc,
     Key? key,
   }) : super(key: key);
   @override
@@ -24,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    bloc = HomeBloc(widget.uid);
+    bloc = widget.bloc;
     super.initState();
   }
 
@@ -38,11 +36,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          TextButton(onPressed: (){
-            push(context, HistoryPage(widget.uid));
-          }, child: Text('HISTORICO'))
-        ],
+        // actions: [
+        //   TextButton(
+        //       onPressed: () {
+        //         push(context, HistoryPage(bloc.motoboy.id));
+        //       },
+        //       child: Text('HISTORICO'))
+        // ],
       ),
       body: Column(
         children: [
@@ -89,7 +89,6 @@ class _HomePageState extends State<HomePage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: OpenOrderTileWidget(
-
                               e.store.name,
                               e.store.address.toString(),
                               e.total.toStringAsFixed(2),

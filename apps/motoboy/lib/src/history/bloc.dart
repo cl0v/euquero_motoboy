@@ -3,7 +3,7 @@ import 'package:core/core.dart';
 import '../repository.dart';
 
 class HistoryBloc extends SimpleBloc<List<DeliveredOrder>> {
-  Repository repository = Repository();
+  MotoboyRepository repository = MotoboyRepository();
   final String uid;
 
   HistoryBloc(this.uid){

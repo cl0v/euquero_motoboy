@@ -4,20 +4,22 @@ import 'package:core/core.dart';
 import 'package:motoboy/src/repository.dart';
 
 class HomeBloc {
-  HomeBloc(String uid) {
-    _init(uid);
+  HomeBloc({
+    required this.motoboy,
+    required this.repository,
+  }) {
+    _init();
   }
-  late final String uid;
-  Repository repository = Repository();
+
+  MotoboyRepository repository = MotoboyRepository();
 
   late MotoboyOrderInfo motoboy;
 
   final openOrdersBloc = SimpleBloc<List<OpenOrder>>();
   final acceptedOrdersBloc = SimpleBloc<List<AcceptedOrder>>();
 
-  _init(uid) async {
+  _init() async {
     //TODO: Esse carinha pode dar error pois pode ser necessário antes de chegar (Posso passar por stream); Ver a necessidade dele...
-    repository.get(uid).then((value) => motoboy = value);
 
     final opens = repository
         .openOrders()
@@ -25,9 +27,10 @@ class HomeBloc {
     openOrdersBloc.subscribe(opens);
 
     final accepteds =
-        repository.acceptedOrders(uid).map((event) => event.map((e) {
+        repository.acceptedOrders(motoboy.id).map((event) => event.map((e) {
               return AcceptedOrder.fromMap(e);
             }).toList());
+
     acceptedOrdersBloc.subscribe(accepteds);
   }
 

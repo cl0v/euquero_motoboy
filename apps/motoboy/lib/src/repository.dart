@@ -11,7 +11,7 @@ class Repository {
 /// Recebe o motoboy
   Future<MotoboyOrderInfo> get(String uid) async {
     final f = await FirebaseFirestore.instance
-        .collection(UserData.userCollection)
+        .collection(Motoboy.collection)
         .doc(uid)
         .get();
     return MotoboyOrderInfo.fromMap(f.data()!..addAll({'id': f.id}));

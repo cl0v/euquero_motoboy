@@ -6,16 +6,16 @@ import 'package:store/src/features/request/states.dart';
 // Bloc nada mais é do que as alterações que acontecem na página
 
 class RequestBloc extends SimpleBloc<RequestState> {
-  RequestBloc(
-    String uid, {
+  RequestBloc({
+    required this.store,
     required this.repository,
   }) {
-    _init(uid);
+    _init();
   }
 
   late final RequestRepository repository;
 
-  late final StoreOrderInfo store;
+  final StoreOrderInfo store;
   late final Frete frete;
 
   late Address address;
@@ -25,21 +25,21 @@ class RequestBloc extends SimpleBloc<RequestState> {
   double get valorFrete => frete.valorTotal(0);
   double get total => frete.valorTotal(0) + value;
 
-  _init(String uid) async {
+  _init() async {
     //TODO: Refazer
-    store = await repository.get(uid);
-    frete = await repository.fetchFreteValue();
+    frete = await repository.fetchFreteValue(store.franchiseId);
   }
 
   requestDelivery() async {
-      await repository.requestMotoboy(
-        Order(
-          valorPedido: value,
-          valorFrete: valorFrete,
-          store: store,
-          client: client,
-        ),
-      );
+    await repository.requestMotoboy(
+      Order(
+        franchiseId: store.franchiseId,
+        valorPedido: value,
+        valorFrete: valorFrete,
+        store: store,
+        client: client,
+      ),
+    );
   }
 
   init() {

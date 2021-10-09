@@ -8,20 +8,22 @@ class RequestRepository {
     this.firestore = firestore ?? FirebaseFirestore.instance;
   }
 
+
+
   Future<void> requestMotoboy(Order o) =>
       firestore.collection(Order.collection).add(o.toMap()..addAll({'createdAt' : Timestamp.now()}));
 
-  Future<Frete> fetchFreteValue() async {
+  Future<Frete> fetchFreteValue(String franchiseId) async {
     final r = await FirebaseFirestore.instance
-        .collection(GlobalConfigs.collection)
-        .doc(GlobalConfigs.docId)
+        .collection(Franchise.collection)
+        .doc(franchiseId)
         .get();
     return Frete.fromMap(r.data()?['frete']);
   }
 
   Future<StoreOrderInfo> get(String uid) async {
     final f = await FirebaseFirestore.instance
-        .collection(UserData.userCollection)
+        .collection(Store.collection)
         .doc(uid)
         .get();
     return StoreOrderInfo.fromMap(f.data()!..addAll({'id': f.id}));

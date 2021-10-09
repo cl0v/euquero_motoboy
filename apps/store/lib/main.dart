@@ -25,12 +25,16 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: AuthenticationPage(onTap: (id) {
+      home: AuthenticationPage(onTap: (String id) async {
+
+        final RequestRepository repository = RequestRepository();
+        final store = await repository.get(id);
+        
         return RequestProvider(
           child: const RequestPage(),
           bloc: RequestBloc(
-            id,
-            repository: RequestRepository(),
+            store: store,
+            repository: repository,
           ),
         );
       }),

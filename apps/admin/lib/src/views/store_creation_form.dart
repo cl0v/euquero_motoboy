@@ -1,11 +1,11 @@
+import 'package:admin/src/repositories/store_repository.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import '../models/store.dart';
-import '../repository.dart';
 
 class FormularioCadastroLoja extends StatefulWidget {
-  const FormularioCadastroLoja({Key? key}) : super(key: key);
+  const FormularioCadastroLoja({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   _FormularioCadastroLojaState createState() => _FormularioCadastroLojaState();
@@ -42,6 +42,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
   Store get store => Store(
         name: nameController.text,
         cnpj: cnpjController.text,
+        franchiseId: widget.id,
         phone: phoneController.text,
         taxaCobrada: double.parse(taxaController.text),
         address: Address(
@@ -52,7 +53,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
         dadosBancarios: dadosBancarios,
       );
 
-  Repository repository = Repository();
+  StoreRepository repository = StoreRepository();
 
   bool createDisbled = false;
 

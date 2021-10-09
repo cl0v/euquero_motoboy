@@ -1,5 +1,4 @@
 import 'package:authenticator/authenticator.dart';
-import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:dependences/dependences.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +44,8 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
   return AuthenticationPage(
-        onTap: (a) {
+        onTap: (a) async{
+          //TODO: Implementar o motoboy por provider
           return HomePage(a);
         },
       );

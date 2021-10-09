@@ -1,11 +1,11 @@
-import 'package:admin/src/repository.dart';
+import 'package:admin/src/repositories/motoboy_repository.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import '../models/motoboy.dart';
 
 class FormularioCadastroMotoboy extends StatefulWidget {
-  const FormularioCadastroMotoboy({Key? key}) : super(key: key);
+  const FormularioCadastroMotoboy({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   _FormularioCadastroMotoboyState createState() =>
@@ -25,13 +25,14 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
   final TextEditingController agenciaPixController = TextEditingController();
   final TextEditingController contaPixController = TextEditingController();
 
-  Repository repository = Repository();
+  MotoboyRepository repository = MotoboyRepository();
 
 //Algum tipo de event notifier
   Motoboy get motoboy {
     return Motoboy(
       name: nameController.text,
       cpf: cpfController.text,
+      franchiseId: widget.id,
       phone: phoneController.text,
       placaDaMoto: placaController.text,
       taxaCobrada: double.parse(taxaController.text),

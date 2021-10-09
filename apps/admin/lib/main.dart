@@ -1,6 +1,5 @@
 import 'package:admin/src/views/dashboard.dart';
 import 'package:authenticator/authenticator.dart';
-import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: Home(),
+      home: const Home(),
     );
   }
 }
@@ -29,7 +28,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationPage(onTap: (id) {
+    return AuthenticationPage(onTap: (id) async{
       return DashboardPage(id);
     });
   }

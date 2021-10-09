@@ -20,15 +20,15 @@ class Order {
   final double valorPedido;
   final double valorFrete;
   final OrderStatus status;
+  final String franchiseId;
 
   final StoreOrderInfo store;
   final ClientModel client;
-  
-
 
   Order({
     required this.valorPedido,
     required this.valorFrete,
+    required this.franchiseId,
     required this.store,
     required this.client,
   }) : status = OrderStatus.open;
@@ -37,6 +37,7 @@ class Order {
     return {
       'valor': valorPedido,
       'frete': valorFrete,
+      'franchiseId': franchiseId,
       'status': status.toString(),
       'client': client.toMap(),
       'store': store.toMap(),

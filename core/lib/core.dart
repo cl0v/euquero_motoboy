@@ -7,6 +7,7 @@ export 'src/utils/navigator.dart';
 //Models
 export 'src/models/user/motoboy.dart';
 export 'src/models/user/store.dart';
+export 'src/models/franchise.dart';
 export 'src/models/user/user.dart';
 export 'src/models/address.dart';
 export 'src/models/dados_bancarios.dart';

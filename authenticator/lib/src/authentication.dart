@@ -2,8 +2,9 @@ import 'package:authenticator/src/user_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationPage extends StatelessWidget {
-  AuthenticationPage({Key? key, required this.onTap}) : super(key: key);
-  final Widget Function(String id) onTap;
+  AuthenticationPage({Key? key, required this.onTap})
+      : super(key: key);
+  final Future<Widget> Function(String id) onTap;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -31,10 +32,10 @@ class AuthenticationPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                        Image.asset(
-                          "assets/login.png",
-                          fit: BoxFit.fill,
-                        ),
+                    Image.asset(
+                      "assets/login.png",
+                      fit: BoxFit.fill,
+                    ),
                     SizedBox(
                       height: 100,
                     ),
@@ -79,7 +80,16 @@ class AuthenticationPage extends StatelessWidget {
               )),
             );
           }
-          return onTap(snapshot.data!);
+          return FutureBuilder<Widget>(
+              future: onTap(snapshot.data!),
+              builder: (c, snap) {
+                if (snap.data != null)
+                  return snap.data!;
+                else
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+              });
         });
   }
 }
@@ -107,7 +117,11 @@ class NewButton extends StatelessWidget {
   final double fontSize;
   final VoidCallback onTap;
 
-  const NewButton({Key? key, required this.text, required this.fontSize, required this.onTap})
+  const NewButton(
+      {Key? key,
+      required this.text,
+      required this.fontSize,
+      required this.onTap})
       : super(key: key);
 
   @override

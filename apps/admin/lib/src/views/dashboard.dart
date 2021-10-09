@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grid_button/flutter_grid_button.dart';
 
-import 'global_configs.dart';
 import 'motoboy_creation_form.dart';
 import 'store_creation_form.dart';
 
@@ -29,15 +28,15 @@ class _DashboardPageState extends State<DashboardPage> {
         onPressed: (v) {
           if (v != null) push(context, v);
         },
-        items: const [
+        items: [
           [
             GridButtonItem(
                 child:
-                    Text('Cadastrar Motoboy', style: TextStyle(fontSize: 22)),
-                value: FormularioCadastroMotoboy()),
+                    const Text('Cadastrar Motoboy', style: TextStyle(fontSize: 22)),
+                value: FormularioCadastroMotoboy(id: widget.uid)),
             GridButtonItem(
-                child: Text('Cadastrar Loja', style: TextStyle(fontSize: 22)),
-                value: FormularioCadastroLoja()),
+                child: const Text('Cadastrar Loja', style: TextStyle(fontSize: 22)),
+                value: FormularioCadastroLoja(id: widget.uid)),
           ],
           // [
           //   GridButtonItem(

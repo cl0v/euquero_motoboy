@@ -1,0 +1,5 @@
+
+authenticator/pubspec.lock
+*.lock
+.DS_Store
+apps/.DS_Store

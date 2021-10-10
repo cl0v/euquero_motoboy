@@ -1,17 +1,17 @@
 import 'package:authenticator/src/user_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthenticationPage extends StatelessWidget {
-  AuthenticationPage({Key? key, required this.onTap})
-      : super(key: key);
-  final Future<Widget> Function(String id) onTap;
+  AuthenticationPage({Key? key, required this.onLogin}) : super(key: key);
+  final Future<Widget> Function(String id) onLogin;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final UserAuth auth = UserAuth();
 
-  onLogin(context) async {
+  _onLogin(context) async {
     final id = await auth.login(emailController.text, passwordController.text);
     if (id == null)
       return ScaffoldMessenger.of(context)
@@ -57,7 +57,7 @@ class AuthenticationPage extends StatelessWidget {
                     NewButton(
                       fontSize: 14,
                       text: "Login",
-                      onTap: () => onLogin(context),
+                      onTap: () => _onLogin(context),
                     ),
                     SizedBox(
                       height: 50,
@@ -67,7 +67,8 @@ class AuthenticationPage extends StatelessWidget {
                       children: [
                         Text("Não tem conta?   "),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              launch("https://wa.me/553584633939?text=Cadartrar-me"),
                           child: Text(
                             "Cadastrar!",
                             style: TextStyle(color: Colors.orange),
@@ -81,7 +82,7 @@ class AuthenticationPage extends StatelessWidget {
             );
           }
           return FutureBuilder<Widget>(
-              future: onTap(snapshot.data!),
+              future: onLogin(snapshot.data!),
               builder: (c, snap) {
                 if (snap.data != null)
                   return snap.data!;

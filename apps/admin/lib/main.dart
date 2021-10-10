@@ -1,9 +1,12 @@
 import 'package:admin/src/views/dashboard.dart';
 import 'package:authenticator/authenticator.dart';
+import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -28,7 +31,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationPage(onTap: (id) async{
+    return AuthenticationPage(onLogin: (id) async{
       //TODO: Implementar sistema de login por franquia
       return DashboardPage(id);
     });

@@ -31,9 +31,10 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationPage(onLogin: (id) async{
+    return AuthenticationPage(onLogin: (id) async {
       //TODO: Implementar sistema de login por franquia
-      // Ainda nao implementado
+      // Ainda nao implementado++
+
       return DashboardPage(id);
     });
   }

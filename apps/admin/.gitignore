@@ -7,7 +7,6 @@
 .firebase/
 android/
 ios/
-web/
 .metadata
 .DS_Store
 pubspec.lock

@@ -42,10 +42,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthenticationPage(
-      onTap: (id) async {
+      onLogin: (id) async {
         MotoboyRepository repository = MotoboyRepository();
         final motoboy = await repository.get(id);
-
         return HomePage(
           bloc: HomeBloc(motoboy: motoboy, repository: repository),
         );

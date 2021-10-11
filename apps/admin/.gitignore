@@ -4,6 +4,8 @@
 
 ### Flutter ###
 # Flutter/Dart/Pub related
+.idea/
+admin.iml
 .firebase/
 android/
 ios/

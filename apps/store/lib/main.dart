@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: AuthenticationPage(onTap: (String id) async {
+      home: AuthenticationPage(onLogin: (String id) async {
 
         final RequestRepository repository = RequestRepository();
         final store = await repository.get(id);

@@ -23,7 +23,6 @@ class AcceptedOrderTileWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         width: MediaQuery.of(context).size.width - 10,
-        height: 220,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -95,22 +94,24 @@ class AcceptedOrderTileWidget extends StatelessWidget {
                 size: 15,
                 color: Colors.black,
               ),
+              NewText(
+                text: "Entregar: $clientAddress",
+                size: 15,
+                color: Colors.black,
+              ),
+              Divider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  NewText(
-                    text: "Entregar: $clientAddress",
-                    size: 15,
-                    color: Colors.black,
-                  ),
                   ElevatedButton(
                     onPressed: onPressed,
                     child: NewText(
+                      size: 12,
                       text: "entregar",
                       color: Colors.white,
                       bold: FontWeight.bold,
                     ),
-                  )
+                  ),
                 ],
               ),
             ],
@@ -120,13 +121,15 @@ class AcceptedOrderTileWidget extends StatelessWidget {
     );
   }
 }
+
 class NewText extends StatelessWidget {
   final text;
   final color;
-  final size;
+  final double size;
   final bold;
 
-  const NewText({Key? key, this.text, this.color, this.size, this.bold})
+  const NewText(
+      {Key? key, this.text, this.color, required this.size, this.bold})
       : super(key: key);
 
   @override

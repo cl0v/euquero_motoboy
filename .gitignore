@@ -4,3 +4,4 @@ authenticator/pubspec.lock
 .DS_Store
 apps/.DS_Store
 local_secure/upload-keystore.jks
+*.iml

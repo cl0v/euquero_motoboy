@@ -5,13 +5,14 @@
 ### Flutter ###
 # Flutter/Dart/Pub related
 .firebase/
+analysis_options.yaml
 android/
 ios/
 web/
 .metadata
 .DS_Store
 pubspec.lock
-
+analysis_options.yaml
 **/doc/api/
 .dart_tool/
 .flutter-plugins

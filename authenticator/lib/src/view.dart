@@ -2,6 +2,7 @@ import 'package:authenticator/src/user_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//TODO: Adicionar tela de carregamento
 class AuthenticationPage extends StatelessWidget {
   AuthenticationPage({Key? key, required this.onLogin}) : super(key: key);
   final Future<Widget> Function(String id) onLogin;
@@ -12,10 +13,12 @@ class AuthenticationPage extends StatelessWidget {
   final UserAuth auth = UserAuth();
 
   _onLogin(context) async {
-    final id = await auth.login(emailController.text, passwordController.text);
-    if (id == null)
+    try {
+    await auth.login(emailController.text, passwordController.text);
+    } catch (e) {
       return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Login incorreto!')));
+          .showSnackBar(SnackBar(content: Text('Usuario ou senha inválido!')));
+    }
   }
 
   @override
@@ -25,13 +28,7 @@ class AuthenticationPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Scaffold(
-              body: SafeArea(
-                  child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+              body: ListView(children: [
                     Image.asset(
                       "assets/login.png",
                       fit: BoxFit.fill,
@@ -78,7 +75,6 @@ class AuthenticationPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              )),
             );
           }
           return FutureBuilder<Widget>(

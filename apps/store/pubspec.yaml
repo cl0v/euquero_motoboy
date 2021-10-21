@@ -29,7 +29,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  
+  firebase_messaging: ^10.0.8
+  cloud_functions: ^3.0.4
+  
   authenticator:
     path: ../../authenticator
   

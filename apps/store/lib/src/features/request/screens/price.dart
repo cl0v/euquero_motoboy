@@ -29,7 +29,8 @@ class _PricesPageState extends State<PricesPage> {
   }
 
   onNext() {
-    bloc.value = double.parse(valorController.text);
+    
+    bloc.value = double.parse(valorController.text.replaceAll(',', '.'));
     bloc.add(RequestState.total);
   }
 

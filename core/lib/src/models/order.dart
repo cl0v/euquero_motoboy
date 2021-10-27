@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../core.dart';
 
 /*
@@ -19,6 +21,7 @@ class Order {
 
   final double valorPedido;
   final double valorFrete;
+  //enum
   final OrderStatus status;
   final String franchiseId;
 
@@ -31,18 +34,34 @@ class Order {
     required this.franchiseId,
     required this.store,
     required this.client,
-  }) : status = OrderStatus.open;
+    OrderStatus? status,
+  }) : status = status ?? OrderStatus.open;
 
   Map<String, dynamic> toMap() {
     return {
-      'valor': valorPedido,
-      'frete': valorFrete,
+      'valorPedido': valorPedido,
+      'valorFrete': valorFrete,
+      'status': status?.index,
       'franchiseId': franchiseId,
-      'status': status.toString(),
-      'client': client.toMap(),
       'store': store.toMap(),
+      'client': client.toMap(),
     };
   }
+
+  factory Order.fromMap(Map<String, dynamic> map) {
+    return Order(
+      valorPedido: map['valorPedido'],
+      valorFrete: map['valorFrete'],
+      status: OrderStatus.values[map['status']],
+      franchiseId: map['franchiseId'],
+      store: StoreOrderInfo.fromMap(map['store']),
+      client: ClientModel.fromMap(map['client']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Order.fromJson(String source) => Order.fromMap(json.decode(source));
 }
 
 /// Classe de leitura do motoboy

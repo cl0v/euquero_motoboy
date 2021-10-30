@@ -1,59 +1,50 @@
-import 'package:admin/src/repositories/store_repository.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
+import '../controller.dart';
+import '../provider.dart';
 
-class FormularioCadastroLoja extends StatefulWidget {
-  const FormularioCadastroLoja({Key? key, required this.id}) : super(key: key);
-  final String id;
+class FormularioCadastroMotoboy extends StatefulWidget {
+  const FormularioCadastroMotoboy({Key? key})
+      : super(key: key);
 
   @override
-  _FormularioCadastroLojaState createState() => _FormularioCadastroLojaState();
+  _FormularioCadastroMotoboyState createState() =>
+      _FormularioCadastroMotoboyState();
 }
 
-class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
+class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
   final TextEditingController nameController = TextEditingController();
-
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController cnpjController = TextEditingController();
-
+  final TextEditingController cpfController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-
+  final TextEditingController placaController = TextEditingController();
   final TextEditingController taxaController = TextEditingController();
-  final TextEditingController addressNumberController = TextEditingController();
-  final TextEditingController addressStreetController = TextEditingController();
-  final TextEditingController addressBairroController = TextEditingController();
 
   final TextEditingController chavePixController = TextEditingController();
   final TextEditingController bancoPixController = TextEditingController();
   final TextEditingController agenciaPixController = TextEditingController();
   final TextEditingController contaPixController = TextEditingController();
 
-  bool isPix = true;
+  late final RegistrationController controller;
 
-  DadosBancarios get dadosBancarios => isPix
-      ? Pix(chavePixController.text)
-      : Conta(
-          bancoPixController.text,
-          agenciaPixController.text,
-          contaPixController.text,
-        );
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    controller = RegistrationProvider.of(context)!.controller;
+  }
 
-  Store get store => Store(
-        name: nameController.text,
-        cnpj: cnpjController.text,
-        franchiseId: widget.id,
-        phone: phoneController.text,
-        taxaCobrada: double.parse(taxaController.text),
-        address: Address(
-          numero: addressNumberController.text,
-          rua: addressStreetController.text,
-          bairro: addressBairroController.text,
-        ),
-        dadosBancarios: dadosBancarios,
-      );
-
-  StoreRepository repository = StoreRepository();
+//Algum tipo de event notifier
+  Motoboy get motoboy {
+    return Motoboy(
+      name: nameController.text,
+      cpf: cpfController.text,
+      phone: phoneController.text,
+      placaDaMoto: placaController.text,
+      taxaCobrada: double.parse(taxaController.text),
+      dadosBancarios: dadosBancarios,
+    );
+  }
 
   bool createDisbled = false;
 
@@ -61,26 +52,28 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
     setState(() {
       createDisbled = true;
     });
-    await repository.create(store, emailController.text);
+    await controller.repository.createMotoboy(motoboy, emailController.text);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);
   }
 
+  bool isPix = true;
+
+  DadosBancarios get dadosBancarios => isPix
+      ? Pix(chavePixController.text)
+      : Conta(bancoPixController.text, agenciaPixController.text,
+          contaPixController.text);
+
   @override
   Widget build(BuildContext context) {
-    final userFields = [
+    final fields = [
       TextFieldWidget(labelText: 'Nome', controller: nameController),
       TextFieldWidget(labelText: 'Email', controller: emailController),
-      TextFieldWidget(labelText: 'CNPJ', controller: cnpjController),
+      TextFieldWidget(labelText: 'CPF', controller: cpfController),
       TextFieldWidget(labelText: 'Telefone', controller: phoneController),
       TextFieldWidget(labelText: 'Taxa comissão', controller: taxaController),
-    ];
-
-    final addressFields = [
-      TextFieldWidget(labelText: 'Número', controller: addressNumberController),
-      TextFieldWidget(labelText: 'Rua', controller: addressStreetController),
-      TextFieldWidget(labelText: 'Bairro', controller: addressBairroController),
+      TextFieldWidget(labelText: 'Placa da Moto', controller: placaController),
     ];
 
     final dbFields = [
@@ -88,34 +81,21 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
       TextFieldWidget(labelText: 'Agencia', controller: agenciaPixController),
       TextFieldWidget(labelText: 'Conta', controller: contaPixController),
     ];
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastrar Loja'),
+        title: const Text('Cadastrar Motoboy'),
       ),
-      bottomNavigationBar:
-          BottomNavButton('Cadastrar', createDisbled ? null : onCreatePressed),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: BottomNavButton(
+        'Cadastrar',
+        createDisbled ? null : onCreatePressed,
+      ),
       body: Form(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: [
-            ...userFields
+            ...fields
                 .map((e) => Padding(
                     child: e, padding: const EdgeInsets.symmetric(vertical: 4)))
                 .toList(),
-            const Divider(),
-            Center(
-              child: Title(
-                color: Colors.blue,
-                child: const Text('Endereço'),
-              ),
-            ),
-            ...addressFields
-                .map((e) => Padding(
-                    child: e, padding: const EdgeInsets.symmetric(vertical: 4)))
-                .toList(),
-
             const Divider(),
             Center(
               child: Title(
@@ -150,27 +130,14 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
               ],
             ),
             isPix
-                ? Column(
-                    children: [
-                      TextFieldWidget(
-                          labelText: 'Chave Pix',
-                          controller: chavePixController),
-                    ],
-                  )
+                ? TextFieldWidget(
+                    labelText: 'Chave Pix', controller: chavePixController)
                 : Column(
                     children: dbFields
                         .map((e) => Padding(
                             child: e,
                             padding: const EdgeInsets.symmetric(vertical: 4)))
                         .toList()),
-            // TextFieldWidget(
-            //     labelText: 'Referência',
-            //     controller: addressReferenceController),
-            // Expanded(
-            //     child: Text(
-            //   'R\$100,00',
-            //   style: Theme.of(context).textTheme.headline4,
-            // ))
           ],
         ),
       ),

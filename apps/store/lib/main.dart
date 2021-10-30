@@ -26,10 +26,14 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       theme: lightTheme,
       home: AuthenticationPage(onLogin: (String id) async {
+        final store = await RequestRepository.get(id);
+        //TODO: Tratar possíveis erros
 
-        final RequestRepository repository = RequestRepository();
-        final store = await repository.get(id);
-        
+        final RequestRepository repository = RequestRepository(
+          id: store.id,
+          franchiseId: store.franchiseId,
+        );
+
         return RequestProvider(
           child: const RequestPage(),
           bloc: RequestBloc(

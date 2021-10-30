@@ -1,23 +1,21 @@
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-
+// "use strict";
+// Object.defineProperty(exports, "__esModule", {value: true});
+// exports.sendToTopic = void 0;
+import functions = require("firebase-functions") ;
+import admin = require("firebase-admin");
 admin.initializeApp();
-
 // const db = admin.firestore();
 const fcm = admin.messaging();
-
-export const sendToTopic = functions.firestore
-    .document("order/{orderId}")
-    .onCreate(async (snapshot) => {
+exports.sendToTopic = functions.firestore
+    .document("franchise/{franchiseId}/order/{orderId}")
+    .onCreate(async (_) => {
     // const order = snapshot.data();
-
-      const payload: admin.messaging.MessagingPayload = {
+      const payload = {
         notification: {
           title: "Nova viagem",
-          body: "Aceitar viagem",
+          body: "Toque para visualizar.",
         },
       };
-
       return fcm.sendToTopic("order", payload);
     });
 // // Start writing Firebase Functions
@@ -27,3 +25,4 @@ export const sendToTopic = functions.firestore
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+// # sourceMappingURL=index.js.map

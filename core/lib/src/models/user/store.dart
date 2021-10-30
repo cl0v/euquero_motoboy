@@ -1,17 +1,15 @@
-
 import '../address.dart';
 import '../dados_bancarios.dart';
 import 'user.dart';
 
 class Store extends UserData {
-static const collection = 'store';
+  static const collection = 'store';
   final Address address;
 
   Store({
     required String name,
     required String cnpj, // doc
     required String phone,
-    required String franchiseId,
     required num taxaCobrada,
     required DadosBancarios dadosBancarios,
     required this.address,
@@ -19,10 +17,18 @@ static const collection = 'store';
           name: name,
           document: cnpj,
           phone: phone,
-          franchiseId: franchiseId,
           taxaCobrada: taxaCobrada,
           dadosBancarios: dadosBancarios,
         );
+
+  Map<String, dynamic> toStoreOrderInfo() {
+    return {
+      'name': name,
+      'franchiseId': franchiseId,
+      'phone': phone,
+      'address': address.toMap(),
+    };
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -72,6 +78,4 @@ class StoreOrderInfo {
       'address': address.toMap(),
     };
   }
-
-  
 }

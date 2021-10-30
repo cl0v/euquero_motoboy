@@ -123,13 +123,12 @@ class AcceptedOrderTileWidget extends StatelessWidget {
 }
 
 class NewText extends StatelessWidget {
-  final text;
-  final color;
+  final String text;
+  final Color color;
   final double size;
-  final bold;
+  final FontWeight? bold;
 
-  const NewText(
-      {Key? key, this.text, this.color, required this.size, this.bold})
+  const NewText({Key? key,required  this.text, required this.color, this.size = 15, this.bold})
       : super(key: key);
 
   @override

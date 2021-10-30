@@ -24,12 +24,17 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<List<DeliveredOrder>>(
+      body: StreamBuilder<List<Order>>(
           stream: bloc.stream,
           builder: (c, snapshot) {
             if (snapshot.data != null)
               return ListView(
-                children: snapshot.data?.map((e) => HistoryListTile(e.total.toStringAsFixed(2), e.client.name)).toList() ?? [],
+                children: snapshot.data
+                        ?.map((e) => HistoryListTile(
+                            (e.valorFrete + e.valorPedido).toStringAsFixed(2),
+                            e.client.name))
+                        .toList() ??
+                    [],
               );
             return Center(
               child: CircularProgressIndicator(),

@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Text('Pedidos aceitos'),
-          StreamBuilder<List<AcceptedOrder>>(
+          StreamBuilder<List<Order>>(
             stream: bloc.acceptedOrdersBloc.stream,
             builder: (context, snapshot) {
               if (!snapshot.hasData)
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     .map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: AcceptedOrderTileWidget(
-                            total: e.total.toStringAsFixed(2),
+                            total: (e.valorFrete + e.valorPedido).toStringAsFixed(2),
                             clientTitle: e.client.name,
                             clientAddress: e.client.address.toString(),
                             storeTitle: e.store.name,
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           Text('Pedidos abertos'),
-          StreamBuilder<List<OpenOrder>>(
+          StreamBuilder<List<Order>>(
             stream: bloc.openOrdersBloc.stream,
             builder: (context, snapshot) {
               if (!snapshot.hasData)
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                             child: OpenOrderTileWidget(
                               e.store.name,
                               e.store.address.toString(),
-                              e.total.toStringAsFixed(2),
+                              (e.valorFrete + e.valorPedido).toStringAsFixed(2),
                               () => bloc.acceptOrder(e),
                             ),
                           ),

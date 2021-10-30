@@ -57,8 +57,11 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthenticationPage(
       onLogin: (id) async {
-        MotoboyRepository repository = MotoboyRepository();
-        final motoboy = await repository.get(id);
+        final motoboy = await MotoboyRepository.get(id);
+        MotoboyRepository repository = MotoboyRepository(
+          uid: motoboy.id,
+          franchiseId: motoboy.franchiseId,
+        );
         return HomePage(
           bloc: HomeBloc(motoboy: motoboy, repository: repository),
         );

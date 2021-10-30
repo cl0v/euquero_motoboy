@@ -11,7 +11,7 @@ abstract class UserData {
   final String document;
   final String name;
   final String phone;
-  final String franchiseId;
+  late final String franchiseId;
   final num taxaCobrada;
   final DadosBancarios dadosBancarios;
 
@@ -19,7 +19,6 @@ abstract class UserData {
     required this.name,
     required this.document,
     required this.phone,
-    required this.franchiseId,
     required this.taxaCobrada,
     required this.dadosBancarios,
   });

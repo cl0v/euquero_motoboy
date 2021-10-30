@@ -1,8 +1,10 @@
-import 'package:admin/src/views/dashboard.dart';
+import 'package:admin/src/pages/home/view.dart';
 import 'package:authenticator/authenticator.dart';
 import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+
+import 'src/repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,9 +35,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthenticationPage(onLogin: (id) async {
       //TODO: Implementar sistema de login por franquia
-      // Ainda nao implementado++
-
-      return DashboardPage(id);
+      return HomePage(repository: Repository(id));
     });
   }
 }

@@ -64,8 +64,8 @@ class AuthenticationPage extends StatelessWidget {
                       children: [
                         Text("Não tem conta?   "),
                         TextButton(
-                          onPressed: () =>
-                              launch("https://wa.me/553584633939?text=Cadartrar-me"),
+                          onPressed: () => launch(
+                              "https://wa.me/553584633939?text=Cadartrar-me"),
                           child: Text(
                             "Cadastrar!",
                             style: TextStyle(color: Colors.orange),
@@ -83,8 +83,10 @@ class AuthenticationPage extends StatelessWidget {
                 if (snap.data != null)
                   return snap.data!;
                 else
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
               });
         });

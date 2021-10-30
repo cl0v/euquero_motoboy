@@ -11,35 +11,34 @@ class HomeBloc {
     _init();
   }
 
-  MotoboyRepository repository = MotoboyRepository();
+  final MotoboyRepository repository;
+  final MotoboyOrderInfo motoboy;
 
-  late MotoboyOrderInfo motoboy;
-
-  final openOrdersBloc = SimpleBloc<List<OpenOrder>>();
-  final acceptedOrdersBloc = SimpleBloc<List<AcceptedOrder>>();
+  final openOrdersBloc = Bloc<List<Order>>();
+  final acceptedOrdersBloc = Bloc<List<Order>>();
 
   _init() async {
     //TODO: Esse carinha pode dar error pois pode ser necessário antes de chegar (Posso passar por stream); Ver a necessidade dele...
 
     final opens = repository
         .openOrders()
-        .map((event) => event.map((e) => OpenOrder.fromMap(e)).toList());
+        .map((event) => event.map((e) => Order.fromMap(e)).toList());
     openOrdersBloc.subscribe(opens);
 
     final accepteds =
         repository.acceptedOrders(motoboy.id).map((event) => event.map((e) {
-              return AcceptedOrder.fromMap(e);
+              return Order.fromMap(e);
             }).toList());
 
     acceptedOrdersBloc.subscribe(accepteds);
   }
 
-  acceptOrder(OpenOrder order) {
-    return repository.acceptOrder(order.id, order.toMap(motoboy));
+  acceptOrder(Order order) {
+    return repository.acceptOrder(order);
   }
 
-  finishOrder(AcceptedOrder order) {
-    return repository.deliverOrder(order.id, order.delivered());
+  finishOrder(Order order) {
+    return repository.deliverOrder(order.id);
   }
 
   dispose() {

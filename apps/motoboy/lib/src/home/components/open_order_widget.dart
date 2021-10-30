@@ -16,6 +16,7 @@ class OpenOrderTileWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         width: MediaQuery.of(context).size.width - 10,
+        // height: 130,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -94,13 +95,12 @@ class OpenOrderTileWidget extends StatelessWidget {
 }
 
 class NewText extends StatelessWidget {
-  final text;
-  final color;
+  final String text;
+  final Color color;
   final double size;
-  final bold;
+  final FontWeight? bold;
 
-  const NewText(
-      {Key? key, this.text, this.color, required this.size, this.bold})
+  const NewText({Key? key, required this.text, required this.color, this.size = 15, this.bold})
       : super(key: key);
 
   @override

@@ -7,21 +7,25 @@ As ordens abertas são modelos exclusivos para o motoboy
 
 */
 //TODO: Fazer apenas um modelo de ordem aceita(Muitas informaçoes em comum, apenas revelar o cliente depois)
-enum OrderStatus {
-  open,
-  accepted,
-  delivered,
-}
 
 /// Criação da ordem pela loja
 class Order {
-  static const String collection = 'order';
+  // Equivalente a pedidos entregues(Todos os dados preenchidos)
+  static const String collection = 'orders';
+  // Equivalente a pedidos em aberto(Dados de entrega faltando)
+  static const String opensCollection = 'openOrders';
+  // Equivalente a pedidos aceitos(Alguns dados de entrega faltando)
+  static const String acceptedCollection = 'acceptedOrders';
 
   late final String id;
 
+  String? motoboy;
+  late int? createdAt;
+  late int? acceptedAt;
+  late int? deliveredAt;
+
   final double valorPedido;
   final double valorFrete;
-  final OrderStatus status;
   final StoreOrderInfo store;
   final ClientModel client;
 
@@ -30,30 +34,37 @@ class Order {
     required this.valorFrete,
     required this.store,
     required this.client,
-    OrderStatus? status,
-  }) : status = status ?? OrderStatus.open;
+    this.createdAt,
+    this.acceptedAt,
+    this.deliveredAt,
+    this.motoboy,
+  });
 
   Map<String, dynamic> toMap() {
     return {
+      'createdAt': createdAt,
+      'acceptedAt': acceptedAt,
+      'deliveredAt': deliveredAt,
       'valorPedido': valorPedido,
       'valorFrete': valorFrete,
-      'status': status.index,
+      'motoboy': motoboy,
       'store': store.toOrderMap(),
       'client': client.toMap(),
     };
   }
 
-  factory Order.fromMap(Map<String, dynamic> map) {
+  factory Order.fromMap(String id, Map<String, dynamic> map) {
     return Order(
       valorPedido: map['valorPedido'],
       valorFrete: map['valorFrete'],
-      status: OrderStatus.values[map['status']],
       store: StoreOrderInfo.fromOrderMap(map['store']),
       client: ClientModel.fromMap(map['client']),
-    )..id = map['id'];
+      motoboy: map['motoboy'],
+      createdAt: map['createdAt'],
+      acceptedAt: map['acceptedAt'],
+      deliveredAt: map['deliveredAt'],
+    )..id = id;
   }
-
-
 }
 
 // /// Classe de leitura do motoboy

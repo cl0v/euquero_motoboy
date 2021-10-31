@@ -14,21 +14,16 @@ class RequestRepository {
     this.firestore = firestore ?? FirebaseFirestore.instance;
   }
 
-  Future<void> requestMotoboy(String franchiseId, Order o) async {
-    final doc = await firestore
+  Future requestMotoboy(Order order) async {
+    final map = order.toMap()
+      ..addAll({'createdAt': Timestamp.now().millisecondsSinceEpoch});
+
+    //Adiciona a ordem na franchise/{id}/openOrders
+    await firestore
         .collection(Franchise.collection)
         .doc(franchiseId)
-        .collection(Order.collection)
-        .add(o.toMap()..addAll({'createdAt': Timestamp.now().millisecondsSinceEpoch}));
-
-    //TODO: Avaliar se a loja precisa monitorar o pedido também
-    await firestore.collection(Franchise.collection)
-        .doc(franchiseId)
-        .collection(Store.collection)
-        .doc(id)
-        .collection(Order.collection)
-        .doc(doc.id)
-        .set(o.toMap());
+        .collection(Order.opensCollection)
+        .add(map);
   }
 
   Future<Frete> fetchFreteValue(String franchiseId) async {

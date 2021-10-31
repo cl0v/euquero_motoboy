@@ -68,6 +68,14 @@ class MotoboyOrderInfo {
     };
   }
 
+  factory MotoboyOrderInfo.fromOrderMap(Map<String, dynamic> map) {
+    return MotoboyOrderInfo(
+      id: map['id'],
+      name: map['name'],
+      phone: map['phone'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'name': name,

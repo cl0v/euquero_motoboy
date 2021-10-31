@@ -26,81 +26,103 @@ class MotoboyRepository {
   }
 
   /// Aceitar o pedido
-  Future<void> acceptOrder(Order order) async {
+  Future acceptOrder(Order order) async {
     final t = Timestamp.now().millisecondsSinceEpoch;
+    final map = order.toMap()
+      ..addAll({
+        'motoboy': uid,
+        'acceptedAt': t,
+      });
+
+    // Adiciona o pedido na collection de aceitos.
+    await firestore
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Order.acceptedCollection)
+        .doc(order.id)
+        .set(map);
+
+    // Exclui o pedido da collection de abertos.
+    await firestore
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Order.opensCollection)
+        .doc(order.id)
+        .delete();
+  }
+
+  /// Marcar como entregue
+  deliverOrder(Order order) async {
+    //TODO: É esse cara que vai adicionar a ordem em todos os lugares (Franquia, motoboy e loja)
+    final t = Timestamp.now().millisecondsSinceEpoch;
+    final map = order.toMap()..addAll({'deliveredAt': t});
+
+    // Adiciona o pedido entregue na franquia
     await firestore
         .collection(Franchise.collection)
         .doc(franchiseId)
         .collection(Order.collection)
         .doc(order.id)
-        .update({
-      'motoboy': uid,
-      'status': OrderStatus.accepted.index,
-      'acceptedAt': t,
-    });
-    await firestore
-        .collection(Motoboy.collection)
-        .doc(uid)
-        .collection(Order.collection)
-        .add(order.toMap()
-          ..addAll({
-            'acceptedAt': t,
-            'status': OrderStatus.accepted.index,
-          }));
-  }
+        .set(map);
 
-  /// Marcar como entregue
-  deliverOrder(String orderId) async {
+    // Adiciona o pedido entregue no motoboy
     await firestore
+        .collection(Franchise.collection)
+        .doc(franchiseId)
         .collection(Motoboy.collection)
-        .doc(uid)
+        .doc(order.motoboy)
         .collection(Order.collection)
-        .doc(orderId)
-        .update({
-      'status': OrderStatus.delivered.index,
-      'deliveredAt': Timestamp.now(),
-    });
+        .doc(order.id)
+        .set(map);
+
+    // Adiciona o pedido entregue na loja
+    await firestore
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Store.collection)
+        .doc(order.store.id)
+        .collection(Order.collection)
+        .doc(order.id)
+        .set(map);
+
+    // Remove das aceitas
+    await firestore
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Order.acceptedCollection)
+        .doc(order.id)
+        .delete();
   }
 
   /// Pedidos em aberto
-  Stream<List<Map<String, dynamic>>> openOrders() {
+  Stream<List<Order>> openOrders() {
     return firestore
         .collection(Franchise.collection)
         .doc(franchiseId)
-        .collection(Order.collection)
-        .where('status', isEqualTo: OrderStatus.open.index)
+        .collection(Order.opensCollection)
         .snapshots()
-        .map((event) => event.docs
-            .map(
-              (e) => e.data()..['id'] = e.id,
-            )
-            .toList());
+        .map((event) =>
+            event.docs.map((e) => Order.fromMap(e.id, e.data())).toList());
   }
 
   /// Pedidos aceitos
-  Stream<List<Map<String, dynamic>>> acceptedOrders(String uid) {
+  Stream<List<Order>> acceptedOrders(String uid) {
     return firestore
-        .collection(Motoboy.collection)
-        .doc(uid)
-        .collection(Order.collection)
-        .where('status', isEqualTo: OrderStatus.accepted.index)
-        //TODO: Testar isso, pois so pode ter um query
-        // .where('motoboy.id', isEqualTo: uid)
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Order.acceptedCollection)
+        .where('motoboy', isEqualTo: uid)
         .snapshots()
-        .map((event) => event.docs
-            .map(
-              (e) => e.data()..['id'] = e.id,
-            )
-            .toList());
+        .map((event) => event.docs.map((e) => Order.fromMap(e.id, e.data())).toList());
   }
 
   /// Ultimos 10 pedidos finalizados
   Stream<List<Map<String, dynamic>>> deliveredOrders(String uid) {
+    //TODO: Implementar ordens entregues
     return firestore
         .collection(Franchise.collection)
         .doc(franchiseId)
         .collection(Order.collection)
-        .where('status', isEqualTo: OrderStatus.delivered.index)
         .limit(10)
         .snapshots()
         .map((event) => event.docs

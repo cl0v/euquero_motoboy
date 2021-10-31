@@ -32,7 +32,6 @@ class RequestBloc extends Bloc<RequestState> {
 
   requestDelivery() async {
     await repository.requestMotoboy(
-      store.franchiseId,
       Order(
         valorPedido: value,
         valorFrete: valorFrete,

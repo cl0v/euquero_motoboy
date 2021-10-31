@@ -20,17 +20,9 @@ class HomeBloc {
   _init() async {
     //TODO: Esse carinha pode dar error pois pode ser necessário antes de chegar (Posso passar por stream); Ver a necessidade dele...
 
-    final opens = repository
-        .openOrders()
-        .map((event) => event.map((e) => Order.fromMap(e)).toList());
-    openOrdersBloc.subscribe(opens);
+    openOrdersBloc.subscribe(repository.openOrders());
 
-    final accepteds =
-        repository.acceptedOrders(motoboy.id).map((event) => event.map((e) {
-              return Order.fromMap(e);
-            }).toList());
-
-    acceptedOrdersBloc.subscribe(accepteds);
+    acceptedOrdersBloc.subscribe(repository.acceptedOrders(motoboy.id));
   }
 
   acceptOrder(Order order) {
@@ -38,7 +30,7 @@ class HomeBloc {
   }
 
   finishOrder(Order order) {
-    return repository.deliverOrder(order.id);
+    return repository.deliverOrder(order);
   }
 
   dispose() {

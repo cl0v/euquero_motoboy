@@ -1,3 +1,5 @@
+import 'package:admin/src/pages/pendent_registrations/motoboy.dart';
+import 'package:admin/src/pages/pendent_registrations/store.dart';
 import 'package:admin/src/pages/registration/controller.dart';
 import 'package:admin/src/pages/registration/provider.dart';
 import 'package:admin/src/pages/registration/state.dart';
@@ -27,37 +29,33 @@ class _HomePageState extends State<HomePage> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('Bem vindo'),
+              child: Column(
+                children: [
+                  Text('Cambuquira'),
+                  Text('Marcelo Fernandes')
+                ],
+              ),
             ),
             ListTile(
-              title: const Text('Cadastrar Motoboy'),
+              title: const Text('Motoboys pendentes'),
               onTap: () {
                 push(
                   context,
-                  RegistrationProvider(
-                    child: const RegistrationPage(),
-                    controller: RegistrationController(
-                      repository: widget.repository,
-                      state: RegistrationState.motoboy,
-                    ),
-                  ),
+                  PendentMotoboyRegistrationsPage(id: widget.repository.id),
                 );
               },
             ),
             ListTile(
-              title: const Text('Cadastrar Loja'),
+              title: const Text('Lojas pendentes'),
               onTap: () {
-                push(context, RegistrationProvider(
-                    child: const RegistrationPage(),
-                    controller: RegistrationController(
-                      repository: widget.repository,
-                      state: RegistrationState.store,
-                    ),
-                  ),);
+                push(
+                  context,
+                  PendentStoreRegistrationsPage(id: widget.repository.id),
+                );
               },
             ),
             ListTile(
@@ -73,8 +71,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_today),
-            onPressed: () async {
-            },
+            onPressed: () async {},
           )
         ],
       ),
@@ -86,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             width: 200,
             child: Center(
               child: FutureBuilder<List<Order>>(
-                  future:  Future.value([]),
+                  future: Future.value([]),
                   // /widget.repository.orders(index)
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {

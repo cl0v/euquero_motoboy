@@ -1,8 +1,12 @@
-import 'package:admin/src/pages/registration/controller.dart';
+import 'package:authenticator/authenticator.dart';
 import 'package:core/core.dart';
+import 'package:dependences/dependences.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../provider.dart';
+final franchiseId = kDebugMode
+    ? 'SQP3sTEhmDYSLoHPyyrZCKfO0Vc2'
+    : 'Yr9vJcaEu8NDDxTD4vRlR2DqLxR2';
 
 class FormularioCadastroLoja extends StatefulWidget {
   const FormularioCadastroLoja({Key? key}) : super(key: key);
@@ -15,6 +19,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
   final TextEditingController nameController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController cnpjController = TextEditingController();
 
   final TextEditingController phoneController = TextEditingController();
@@ -40,7 +45,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
         );
 
   Store get store => Store(
-    authorized: false,
+        authorized: false,
         name: nameController.text,
         cnpj: cnpjController.text,
         phone: phoneController.text,
@@ -53,21 +58,15 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
         dadosBancarios: dadosBancarios,
       );
 
-  late final RegistrationController controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    controller = RegistrationProvider.of(context)!.controller;
-  }
-
   bool createDisbled = false;
+
+  final RegisterRepository repository = RegisterRepository();
 
   onCreatePressed() async {
     setState(() {
       createDisbled = true;
     });
-    await controller.repository.createStore(store, emailController.text);
+    await repository.createStore(store, emailController.text, passwordController.text);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);
@@ -78,6 +77,7 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
     final userFields = [
       TextFieldWidget(labelText: 'Nome', controller: nameController),
       TextFieldWidget(labelText: 'Email', controller: emailController),
+      TextFieldWidget(labelText: 'Senha', controller: passwordController),
       TextFieldWidget(labelText: 'CNPJ', controller: cnpjController),
       TextFieldWidget(labelText: 'Telefone', controller: phoneController),
       TextFieldWidget(labelText: 'Taxa comissão', controller: taxaController),
@@ -181,5 +181,22 @@ class _FormularioCadastroLojaState extends State<FormularioCadastroLoja> {
         ),
       ),
     );
+  }
+}
+
+class RegisterRepository {
+  final ff = FirebaseFirestore.instance;
+
+Future createStore(Store store, String email, String password) async {
+    final storeId = await UserAuth().create(email, password);
+
+    await ff
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Store.collection)
+        .doc(storeId)
+        .set(store.toMap());
+
+   
   }
 }

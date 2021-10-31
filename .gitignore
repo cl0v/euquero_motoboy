@@ -6,3 +6,4 @@ apps/.DS_Store
 local_secure/upload-keystore.jks
 *.iml
 node_modules/
+*.lock

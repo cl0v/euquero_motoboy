@@ -14,18 +14,20 @@ class MotoboyRepository {
     this.firestore = firestore ?? FirebaseFirestore.instance;
   }
 
-  /// Recebe o motoboy
-  static Future<MotoboyOrderInfo> get(String uid) async {
+  /// Procura pelo motoboy na top-collection, caso não tenha é que o cadastro
+  /// não foi aprovado ainda.
+  static Future<MotoboyOrderInfo> get(String uid, String franchiseId) async {
     final f = await FirebaseFirestore.instance
         .collection(Motoboy.collection)
         .doc(uid)
         .get();
-    return MotoboyOrderInfo.fromMap(f.data()!..addAll({'id': f.id}));
+    if (f.data() == null) throw Exception('Cadastro ainda não aprovado!');
+    return MotoboyOrderInfo.fromMap(f.id, f.data()!);
   }
 
   /// Aceitar o pedido
   Future<void> acceptOrder(Order order) async {
-    final t = Timestamp.now();
+    final t = Timestamp.now().millisecondsSinceEpoch;
     await firestore
         .collection(Franchise.collection)
         .doc(franchiseId)

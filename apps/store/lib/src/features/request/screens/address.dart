@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:store/src/features/request/bloc.dart';
 import 'package:store/src/features/request/provider.dart';
 import 'package:store/src/features/request/states.dart';
-import 'price.dart';
 
+
+//TODO: Validar os campos garantindo que não possa daixá-los vazio.
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
 
@@ -59,6 +60,7 @@ class _AddressPageState extends State<AddressPage> {
                       flex: 3,
                       child: TextFieldWidget(
                         labelText: 'Rua',
+                        textInputAction: TextInputAction.next,
                         controller: addressStreetController,
                       ),
                     ),
@@ -69,6 +71,7 @@ class _AddressPageState extends State<AddressPage> {
                       flex: 1,
                       child: TextFieldWidget(
                         labelText: 'Número',
+                        textInputAction: TextInputAction.next,
                         controller: addressNumberController,
                       ),
                     ),
@@ -78,13 +81,18 @@ class _AddressPageState extends State<AddressPage> {
                   height: 8,
                 ),
                 TextFieldWidget(
-                    labelText: 'Bairro', controller: addressBairroController),
+                  labelText: 'Bairro',
+                  controller: addressBairroController,
+                  textInputAction: TextInputAction.next,
+                ),
                 const SizedBox(
                   height: 8,
                 ),
                 TextFieldWidget(
                     labelText: 'Referência (Opcional)',
-                    controller: addressReferenceController),
+                    textInputAction: TextInputAction.done,
+                    controller: addressReferenceController,
+                    ),
               ],
             ),
           ),

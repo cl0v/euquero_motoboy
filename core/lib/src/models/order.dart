@@ -38,7 +38,7 @@ class Order {
       'valorPedido': valorPedido,
       'valorFrete': valorFrete,
       'status': status.index,
-      'store': store.toMap(),
+      'store': store.toOrderMap(),
       'client': client.toMap(),
     };
   }
@@ -48,7 +48,7 @@ class Order {
       valorPedido: map['valorPedido'],
       valorFrete: map['valorFrete'],
       status: OrderStatus.values[map['status']],
-      store: StoreOrderInfo.fromMap(map['store']),
+      store: StoreOrderInfo.fromOrderMap(map['store']),
       client: ClientModel.fromMap(map['client']),
     )..id = map['id'];
   }

@@ -1,12 +1,15 @@
+import 'package:authenticator/authenticator.dart';
 import 'package:core/core.dart';
+import 'package:dependences/dependences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/constants.dart';
 
-import '../controller.dart';
-import '../provider.dart';
+final franchiseId = kDebugMode
+    ? 'SQP3sTEhmDYSLoHPyyrZCKfO0Vc2'
+    : 'Yr9vJcaEu8NDDxTD4vRlR2DqLxR2';
 
 class FormularioCadastroMotoboy extends StatefulWidget {
-  const FormularioCadastroMotoboy({Key? key})
-      : super(key: key);
+  const FormularioCadastroMotoboy({Key? key}) : super(key: key);
 
   @override
   _FormularioCadastroMotoboyState createState() =>
@@ -16,6 +19,7 @@ class FormularioCadastroMotoboy extends StatefulWidget {
 class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController placaController = TextEditingController();
@@ -26,24 +30,18 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
   final TextEditingController agenciaPixController = TextEditingController();
   final TextEditingController contaPixController = TextEditingController();
 
-  late final RegistrationController controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    controller = RegistrationProvider.of(context)!.controller;
-  }
+  late final RegisterRepository repository = RegisterRepository();
 
 //Algum tipo de event notifier
   Motoboy get motoboy {
     return Motoboy(
-      authorized: false,
       name: nameController.text,
       cpf: cpfController.text,
       phone: phoneController.text,
       placaDaMoto: placaController.text,
       taxaCobrada: double.parse(taxaController.text),
       dadosBancarios: dadosBancarios,
+      authorized: false,
     );
   }
 
@@ -53,7 +51,8 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
     setState(() {
       createDisbled = true;
     });
-    await controller.repository.createMotoboy(motoboy, emailController.text);
+    await repository.createMotoboy(
+        motoboy, emailController.text, passwordController.text);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Criado com sucesso!')));
     pop(context);
@@ -71,6 +70,7 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
     final fields = [
       TextFieldWidget(labelText: 'Nome', controller: nameController),
       TextFieldWidget(labelText: 'Email', controller: emailController),
+      TextFieldWidget(labelText: 'Senha', controller: passwordController),
       TextFieldWidget(labelText: 'CPF', controller: cpfController),
       TextFieldWidget(labelText: 'Telefone', controller: phoneController),
       TextFieldWidget(labelText: 'Taxa comissão', controller: taxaController),
@@ -82,6 +82,7 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
       TextFieldWidget(labelText: 'Agencia', controller: agenciaPixController),
       TextFieldWidget(labelText: 'Conta', controller: contaPixController),
     ];
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastrar Motoboy'),
@@ -143,5 +144,20 @@ class _FormularioCadastroMotoboyState extends State<FormularioCadastroMotoboy> {
         ),
       ),
     );
+  }
+}
+
+class RegisterRepository {
+  final ff = FirebaseFirestore.instance;
+
+  Future createMotoboy(Motoboy motoboy, String email, String password) async {
+    final id = await UserAuth().create(email, password);
+
+    await ff
+        .collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Motoboy.collection)
+        .doc(id)
+        .set(motoboy.toMap());
   }
 }

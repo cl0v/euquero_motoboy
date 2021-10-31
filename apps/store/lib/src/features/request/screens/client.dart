@@ -54,11 +54,19 @@ class _ClientPageState extends State<ClientPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFieldWidget(labelText: 'Nome', controller: nameController),
+            TextFieldWidget(
+              labelText: 'Nome',
+              controller: nameController,
+              textInputAction: TextInputAction.next,
+            ),
             const SizedBox(
               height: 8,
             ),
-            TextFieldWidget(labelText: 'Tefone', controller: phoneController),
+            TextFieldWidget(
+              labelText: 'Tefone',
+              controller: phoneController,
+              textInputAction: TextInputAction.done,
+            ),
           ],
         ),
       ),

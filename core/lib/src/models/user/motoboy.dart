@@ -11,18 +11,20 @@ class Motoboy extends UserData {
     required String name,
     required String cpf,
     required String phone,
+    required bool authorized,
     required double taxaCobrada,
     required DadosBancarios dadosBancarios,
     required this.placaDaMoto,
   }) : super(
           name: name,
           document: cpf,
+          authorized: authorized,
           phone: phone,
           taxaCobrada: taxaCobrada,
           dadosBancarios: dadosBancarios,
         );
 
-  Map<String, dynamic> toMotoboyOrderInfo() {
+  Map<String, dynamic> toMotoboyOrderInfo(String franchiseId) {
     return {
       'name': name,
       'phone': phone,
@@ -36,7 +38,7 @@ class Motoboy extends UserData {
       'name': name,
       'cpf': document,
       'phone': phone,
-      'franchiseId': franchiseId,
+      'authorized': authorized,
       'placaDaMoto': placaDaMoto,
       'taxaCobrada': taxaCobrada,
       'dadosBancarios': dadosBancarios.toMap(),
@@ -48,36 +50,41 @@ class MotoboyOrderInfo {
   MotoboyOrderInfo({
     required this.id,
     required this.name,
-    required this.franchiseId,
+    // required this.franchiseId,
     required this.phone,
   });
 
   final String id;
   final String name;
-  final String franchiseId;
+  late final String franchiseId;
 
   final String phone;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toOrderMap() {
     return {
       'id': id,
+      'name': name,
+      'phone': phone,
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
       'name': name,
       'franchiseId': franchiseId,
       'phone': phone,
     };
   }
 
-  factory MotoboyOrderInfo.fromMap(Map<String, dynamic> map) {
+  factory MotoboyOrderInfo.fromMap(
+    String id,
+    Map<String, dynamic> map, [
+    String? franchiseId,
+  ]) {
     return MotoboyOrderInfo(
-      id: map['id'],
+      id: id,
       name: map['name'],
-      franchiseId: map['franchiseId'],
       phone: map['phone'],
-    );
+    )..franchiseId = franchiseId ?? map['franchiseId'];
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory MotoboyOrderInfo.fromJson(String source) =>
-      MotoboyOrderInfo.fromMap(json.decode(source));
 }

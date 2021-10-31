@@ -47,6 +47,7 @@ class _PricesPageState extends State<PricesPage> {
             labelText: 'Valor',
             controller: valorController,
             keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
           ),
         ),
       ),

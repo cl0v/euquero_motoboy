@@ -14,36 +14,36 @@ class Repository implements IRegistration {
   Repository(this.id);
   @override
   Future createMotoboy(Motoboy motoboy, String email) async {
-    final uid = await UserAuth().create(email, '123123');
-    motoboy.franchiseId = id;
+    final motoboyId = await UserAuth().create(email, '123123');
+
     await ff
         .collection(Franchise.collection)
         .doc(id)
         .collection(Motoboy.collection)
-        .doc(uid)
+        .doc(motoboyId)
         .set(motoboy.toMap());
 
     await ff
         .collection(Motoboy.collection)
-        .doc(uid)
-        .set(motoboy.toMotoboyOrderInfo());
+        .doc(motoboyId)
+        .set(motoboy.toMotoboyOrderInfo(id));
   }
 
   @override
   Future createStore(Store store, String email) async {
-    final uid = await UserAuth().create(email, '123123');
-    store.franchiseId = id;
+    final storeId = await UserAuth().create(email, '123123');
+
     await ff
         .collection(Franchise.collection)
         .doc(id)
         .collection(Store.collection)
-        .doc(uid)
+        .doc(storeId)
         .set(store.toMap());
 
     await ff
         .collection(Store.collection)
-        .doc(uid)
-        .set(store.toStoreOrderInfo());
+        .doc(storeId)
+        .set(store.toStoreOrderInfo(id));
   }
 
   Future<List<Order>> orders(int month) async {

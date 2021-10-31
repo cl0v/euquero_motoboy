@@ -1,4 +1,5 @@
 import 'package:authenticator/authenticator.dart';
+import 'package:core/core.dart';
 import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:store/src/features/request/provider.dart';
 
 import 'src/features/request/repository.dart';
 import 'src/features/request/view.dart';
+import 'src/pages/register/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,23 +27,35 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       theme: lightTheme,
-      home: AuthenticationPage(onLogin: (String id) async {
-        final store = await RequestRepository.get(id);
-        //TODO: Tratar possíveis erros
+      home: AuthenticationPage(
+          onCreate: () async => const FormularioCadastroLoja(),
+          onLogin: (String id) async {
+            try {
+              final StoreOrderInfo store = await RequestRepository.get(id);
+              //TODO: Tratar possíveis erros
 
-        final RequestRepository repository = RequestRepository(
-          id: store.id,
-          franchiseId: store.franchiseId,
-        );
+              final RequestRepository repository = RequestRepository(
+                id: store.id,
+                franchiseId: store.franchiseId,
+              );
 
-        return RequestProvider(
-          child: const RequestPage(),
-          bloc: RequestBloc(
-            store: store,
-            repository: repository,
-          ),
-        );
-      }),
+              return RequestProvider(
+                child: const RequestPage(),
+                bloc: RequestBloc(
+                  store: store,
+                  repository: repository,
+                ),
+              );
+            } catch (e) {
+              return Scaffold(
+                backgroundColor: Colors.green[300],
+                body: const Center(
+                  child: Text('Cadastro criado..\nEsperando aprovação.',
+                      style: TextStyle(fontSize: 32)),
+                ),
+              );
+            }
+          }),
     );
   }
 }

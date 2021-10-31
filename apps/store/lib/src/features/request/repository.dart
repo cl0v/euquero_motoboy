@@ -14,20 +14,21 @@ class RequestRepository {
     this.firestore = firestore ?? FirebaseFirestore.instance;
   }
 
-  //TODO: Avaliar se a loja precisa monitorar o pedido também
   Future<void> requestMotoboy(String franchiseId, Order o) async {
     final doc = await firestore
         .collection(Franchise.collection)
         .doc(franchiseId)
         .collection(Order.collection)
-        .add(
-          o.toMap()
-            ..addAll(
-              {'createdAt': Timestamp.now()},
-            ),
-        );
+        .add(o.toMap()..addAll({'createdAt': Timestamp.now().millisecondsSinceEpoch}));
 
-    await firestore.collection(Store.collection).doc(doc.id).set(o.toMap());
+    //TODO: Avaliar se a loja precisa monitorar o pedido também
+    await firestore.collection(Franchise.collection)
+        .doc(franchiseId)
+        .collection(Store.collection)
+        .doc(id)
+        .collection(Order.collection)
+        .doc(doc.id)
+        .set(o.toMap());
   }
 
   Future<Frete> fetchFreteValue(String franchiseId) async {
@@ -43,6 +44,11 @@ class RequestRepository {
         .collection(Store.collection)
         .doc(uid)
         .get();
-    return StoreOrderInfo.fromMap(f.data()!..addAll({'id': f.id}));
+    try {
+      if (f.data() == null) throw Exception('Cadastro ainda não aprovado!');
+      return StoreOrderInfo.fromMap(uid, f.data()!);
+    } catch (e) {
+      throw Exception('Cadastro ainda não aprovado!');
+    }
   }
 }

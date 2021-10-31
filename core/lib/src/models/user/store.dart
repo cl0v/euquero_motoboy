@@ -10,6 +10,7 @@ class Store extends UserData {
     required String name,
     required String cnpj, // doc
     required String phone,
+    required bool authorized,
     required num taxaCobrada,
     required DadosBancarios dadosBancarios,
     required this.address,
@@ -17,11 +18,12 @@ class Store extends UserData {
           name: name,
           document: cnpj,
           phone: phone,
+          authorized: authorized,
           taxaCobrada: taxaCobrada,
           dadosBancarios: dadosBancarios,
         );
 
-  Map<String, dynamic> toStoreOrderInfo() {
+  Map<String, dynamic> toStoreOrderInfo(String franchiseId) {
     return {
       'name': name,
       'franchiseId': franchiseId,
@@ -36,7 +38,7 @@ class Store extends UserData {
       'cnpj': document,
       'name': name,
       'phone': phone,
-      'franchiseId': franchiseId,
+      'authorized': authorized,
       'address': address.toMap(),
       'taxaCobrada': taxaCobrada,
       'dadosBancarios': dadosBancarios.toMap(),
@@ -48,32 +50,52 @@ class StoreOrderInfo {
   StoreOrderInfo({
     required this.id,
     required this.name,
-    required this.franchiseId,
     required this.phone,
     required this.address,
   });
 
   final String id;
   final String name;
-  final String franchiseId;
+  late final String franchiseId;
   final String phone;
   final Address address;
 
-  factory StoreOrderInfo.fromMap(Map<String, dynamic> map) {
+  /// Recebido na hora de se logar (top-level)
+  factory StoreOrderInfo.fromMap(String id, Map<String, dynamic> map,
+      [String? franchiseId]) {
+    return StoreOrderInfo(
+      id: id,
+      name: map['name'],
+      phone: map['phone'],
+      address: Address.fromMap(map['address']),
+    )..franchiseId = franchiseId ?? map['franchiseId'];
+  }
+
+  /// Enviado na hora de cadastrar (top-level)
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'franchiseId': franchiseId,
+      'phone': phone,
+      'address': address.toMap(),
+    };
+  }
+
+  /// Recebe o mapa dentro do pedido
+  factory StoreOrderInfo.fromOrderMap(Map<String, dynamic> map) {
     return StoreOrderInfo(
       id: map['id'],
       name: map['name'],
-      franchiseId: map['franchiseId'],
       phone: map['phone'],
       address: Address.fromMap(map['address']),
     );
   }
 
-  Map<String, dynamic> toMap() {
+  /// Envia dentro do pedido
+  Map<String, dynamic> toOrderMap() {
     return {
       'id': id,
       'name': name,
-      'franchiseId': franchiseId,
       'phone': phone,
       'address': address.toMap(),
     };

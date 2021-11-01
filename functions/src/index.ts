@@ -7,7 +7,7 @@ admin.initializeApp();
 // const db = admin.firestore();
 const fcm = admin.messaging();
 exports.sendToTopic = functions.firestore
-    .document("franchise/{franchiseId}/order/{orderId}")
+    .document("franchise/{franchiseId}/openOrders/{openOrdersId}")
     .onCreate(async (_) => {
     // const order = snapshot.data();
       const payload = {

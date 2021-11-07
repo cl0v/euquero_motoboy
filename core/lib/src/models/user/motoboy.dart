@@ -50,13 +50,12 @@ class MotoboyOrderInfo {
   MotoboyOrderInfo({
     required this.id,
     required this.name,
-    // required this.franchiseId,
     required this.phone,
   });
 
   final String id;
   final String name;
-  late final String franchiseId;
+  static String franchiseId = '';
 
   final String phone;
 
@@ -86,13 +85,12 @@ class MotoboyOrderInfo {
 
   factory MotoboyOrderInfo.fromMap(
     String id,
-    Map<String, dynamic> map, [
-    String? franchiseId,
-  ]) {
+    Map<String, dynamic> map,
+  ) {
     return MotoboyOrderInfo(
       id: id,
       name: map['name'],
       phone: map['phone'],
-    )..franchiseId = franchiseId ?? map['franchiseId'];
+    );
   }
 }

@@ -27,7 +27,7 @@ class RequestBloc extends Bloc<RequestState> {
 
   _init() async {
     //TODO: Refazer
-    frete = await repository.fetchFreteValue(store.franchiseId);
+    frete = await repository.fetchFreteValue();
   }
 
   requestDelivery() async {

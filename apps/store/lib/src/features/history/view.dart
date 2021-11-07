@@ -1,9 +1,11 @@
+
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:motoboy/src/history/controller.dart';
-import 'package:motoboy/src/history/provider.dart';
-import 'package:motoboy/src/history/screens/payments.dart';
-import 'package:motoboy/src/history/screens/recents.dart';
+
+import 'controller.dart';
+import 'provider.dart';
+import 'screens/payment.dart';
+import 'screens/recents.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -25,8 +27,8 @@ class _HistoryPageState extends State<HistoryPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Pedidos'),
-          bottom: TabBar(
+          title: const Text('Pedidos'),
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Histórico',),
               Tab(text: 'Pagamento'),

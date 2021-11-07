@@ -12,6 +12,10 @@ As ordens abertas são modelos exclusivos para o motoboy
 class Order {
   // Equivalente a pedidos entregues(Todos os dados preenchidos)
   static const String collection = 'orders';
+  // Pedidos que não foram pagos e nem solicitado o pagamento.
+  static const String paidCollection = 'paidOrders';
+  // Pedidos que o pagamento foi solicitado.
+  static const String requestPaymentCollection = 'paymentRequestOrders';
   // Equivalente a pedidos em aberto(Dados de entrega faltando)
   static const String opensCollection = 'openOrders';
   // Equivalente a pedidos aceitos(Alguns dados de entrega faltando)

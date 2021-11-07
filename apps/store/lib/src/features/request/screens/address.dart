@@ -1,9 +1,11 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:store/src/features/history/controller.dart';
+import 'package:store/src/features/history/provider.dart';
+import 'package:store/src/features/history/view.dart';
 import 'package:store/src/features/request/bloc.dart';
 import 'package:store/src/features/request/provider.dart';
 import 'package:store/src/features/request/states.dart';
-
 
 //TODO: Validar os campos garantindo que não possa daixá-los vazio.
 class AddressPage extends StatefulWidget {
@@ -46,6 +48,20 @@ class _AddressPageState extends State<AddressPage> {
         appBar: AppBar(
           title: const Text('Para onde?'),
           centerTitle: true,
+          actions: [
+            TextButton.icon(
+                onPressed: () {
+                  push(
+                      context,
+                      HistoryProvider(
+                          child: HistoryPage(),
+                          controller: HistoryController(
+                            repository: bloc.repository,
+                          )));
+                },
+                icon: Icon(Icons.payment),
+                label: Text('Histórico'))
+          ],
         ),
         bottomNavigationBar: BottomNavButton('Próximo', onNext),
         body: SafeArea(
@@ -89,10 +105,10 @@ class _AddressPageState extends State<AddressPage> {
                   height: 8,
                 ),
                 TextFieldWidget(
-                    labelText: 'Referência (Opcional)',
-                    textInputAction: TextInputAction.done,
-                    controller: addressReferenceController,
-                    ),
+                  labelText: 'Referência (Opcional)',
+                  textInputAction: TextInputAction.done,
+                  controller: addressReferenceController,
+                ),
               ],
             ),
           ),

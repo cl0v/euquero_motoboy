@@ -19,6 +19,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   url_launcher: ^6.0.9
   google_fonts: ^2.1.0
+  loading_overlay: ^0.3.0
 
   
 

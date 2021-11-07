@@ -59,14 +59,12 @@ class Home extends StatelessWidget {
     return AuthenticationPage(
       onCreate: () async => FormularioCadastroMotoboy(),
       onLogin: (id) async {
-        print('Teoricamente entrou aq $id');
 
         try {
           final motoboy = await MotoboyRepository.get(id, franchiseId);
 
           MotoboyRepository repository = MotoboyRepository(
             uid: motoboy.id,
-            franchiseId: motoboy.franchiseId,
           );
 
           return HomePage(
@@ -76,7 +74,7 @@ class Home extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.green[300],
             body: Center(
-              child: Text('Cadastro criado..\nEsperando aprovação.',
+              child: Text('Cadastro criado...\nEsperando aprovação.',
                   style: TextStyle(fontSize: 32)),
             ),
           );

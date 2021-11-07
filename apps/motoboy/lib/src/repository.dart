@@ -1,14 +1,14 @@
 import 'package:core/core.dart';
 import 'package:dependences/dependences.dart';
 
-class MotoboyRepository {
+import 'history/interface.dart';
+
+class MotoboyRepository implements IHistoryRepository {
   late final FirebaseFirestore firestore;
   final String uid;
-  final String franchiseId;
 
   MotoboyRepository({
     required this.uid,
-    required this.franchiseId,
     FirebaseFirestore? firestore,
   }) {
     this.firestore = firestore ?? FirebaseFirestore.instance;
@@ -22,6 +22,7 @@ class MotoboyRepository {
         .doc(uid)
         .get();
     if (f.data() == null) throw Exception('Cadastro ainda não aprovado!');
+    MotoboyOrderInfo.franchiseId = f.data()!['franchiseId'];
     return MotoboyOrderInfo.fromMap(f.id, f.data()!);
   }
 
@@ -37,7 +38,7 @@ class MotoboyRepository {
     // Adiciona o pedido na collection de aceitos.
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.acceptedCollection)
         .doc(order.id)
         .set(map);
@@ -45,7 +46,7 @@ class MotoboyRepository {
     // Exclui o pedido da collection de abertos.
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.opensCollection)
         .doc(order.id)
         .delete();
@@ -60,7 +61,7 @@ class MotoboyRepository {
     // Adiciona o pedido entregue na franquia
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.collection)
         .doc(order.id)
         .set(map);
@@ -68,7 +69,7 @@ class MotoboyRepository {
     // Adiciona o pedido entregue no motoboy
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Motoboy.collection)
         .doc(order.motoboy)
         .collection(Order.collection)
@@ -78,7 +79,7 @@ class MotoboyRepository {
     // Adiciona o pedido entregue na loja
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Store.collection)
         .doc(order.store.id)
         .collection(Order.collection)
@@ -88,7 +89,7 @@ class MotoboyRepository {
     // Remove das aceitas
     await firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.acceptedCollection)
         .doc(order.id)
         .delete();
@@ -98,7 +99,7 @@ class MotoboyRepository {
   Stream<List<Order>> openOrders() {
     return firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.opensCollection)
         .snapshots()
         .map((event) =>
@@ -109,26 +110,57 @@ class MotoboyRepository {
   Stream<List<Order>> acceptedOrders(String uid) {
     return firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
         .collection(Order.acceptedCollection)
         .where('motoboy', isEqualTo: uid)
         .snapshots()
-        .map((event) => event.docs.map((e) => Order.fromMap(e.id, e.data())).toList());
+        .map((event) =>
+            event.docs.map((e) => Order.fromMap(e.id, e.data())).toList());
   }
 
-  /// Ultimos 10 pedidos finalizados
-  Stream<List<Map<String, dynamic>>> deliveredOrders(String uid) {
-    //TODO: Implementar ordens entregues
-    return firestore
+  @override
+  Stream<List<Order>> get orders  => firestore
         .collection(Franchise.collection)
-        .doc(franchiseId)
+        .doc(MotoboyOrderInfo.franchiseId)
+        .collection(Motoboy.collection)
+        .doc(uid)
         .collection(Order.collection)
-        .limit(10)
         .snapshots()
-        .map((event) => event.docs
-            .map(
-              (e) => e.data()..['id'] = e.id,
-            )
-            .toList());
+        .map((event) =>
+            event.docs.map((e) => Order.fromMap(e.id, e.data())).toList());
+
+  @override
+  Future<List<Payment>> get payments async {
+    final payments = await firestore
+        .collection(Franchise.collection)
+        .doc(MotoboyOrderInfo.franchiseId)
+        .collection(Motoboy.collection)
+        .doc(uid)
+        .collection(Payment.collection)
+        .get();
+    return payments.docs.map((e) => Payment.fromMap(e.id, e.data())).toList();
+  }
+
+  @override
+  Future<void> requestPayment(Payment payment, List<Order> itens) async {
+    final ref = await firestore
+        .collection(Franchise.collection)
+        .doc(MotoboyOrderInfo.franchiseId)
+        .collection(Motoboy.collection)
+        .doc(uid)
+        .collection(Payment.collection)
+        .add(payment.toMap());
+
+    for (var o in itens) {
+      await ref.collection(Order.collection).add(o.toMap());
+      await firestore
+          .collection(Franchise.collection)
+          .doc(MotoboyOrderInfo.franchiseId)
+          .collection(Motoboy.collection)
+          .doc(uid)
+          .collection(Order.collection)
+          .doc(o.id)
+          .delete();
+    }
   }
 }

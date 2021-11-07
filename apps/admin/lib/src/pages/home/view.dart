@@ -1,9 +1,5 @@
 import 'package:admin/src/pages/pendent_registrations/motoboy.dart';
 import 'package:admin/src/pages/pendent_registrations/store.dart';
-import 'package:admin/src/pages/registration/controller.dart';
-import 'package:admin/src/pages/registration/provider.dart';
-import 'package:admin/src/pages/registration/state.dart';
-import 'package:admin/src/pages/registration/view.dart';
 import 'package:admin/src/repository.dart';
 import 'package:authenticator/authenticator.dart';
 import 'package:core/core.dart';

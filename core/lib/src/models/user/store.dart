@@ -56,19 +56,18 @@ class StoreOrderInfo {
 
   final String id;
   final String name;
-  late final String franchiseId;
+   static String franchiseId = '';
   final String phone;
   final Address address;
 
   /// Recebido na hora de se logar (top-level)
-  factory StoreOrderInfo.fromMap(String id, Map<String, dynamic> map,
-      [String? franchiseId]) {
+  factory StoreOrderInfo.fromMap(String id, Map<String, dynamic> map) {
     return StoreOrderInfo(
       id: id,
       name: map['name'],
       phone: map['phone'],
       address: Address.fromMap(map['address']),
-    )..franchiseId = franchiseId ?? map['franchiseId'];
+    );
   }
 
   /// Enviado na hora de cadastrar (top-level)

@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:motoboy/src/history/controller.dart';
+import 'package:motoboy/src/history/provider.dart';
 import 'package:motoboy/src/history/view.dart';
 
 import 'bloc.dart';
@@ -36,13 +38,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // actions: [
-        //   TextButton(
-        //       onPressed: () {
-        //         push(context, HistoryPage(bloc.motoboy.id));
-        //       },
-        //       child: Text('HISTORICO'))
-        // ],
+        actions: [
+          TextButton.icon(
+              icon: Icon(Icons.payment),
+              onPressed: () {
+                push(
+                  context,
+                  HistoryProvider(
+                    controller: HistoryController(
+                      repository: bloc.repository,
+                    ),
+                    child: HistoryPage(),
+                  ),
+                );
+              },
+              label: Text('HISTORICO'))
+        ],
       ),
       body: Column(
         children: [
@@ -60,7 +71,8 @@ class _HomePageState extends State<HomePage> {
                     .map((e) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: AcceptedOrderTileWidget(
-                            total: (e.valorFrete + e.valorPedido).toStringAsFixed(2),
+                            total: (e.valorFrete + e.valorPedido)
+                                .toStringAsFixed(2),
                             clientTitle: e.client.name,
                             clientAddress: e.client.address.toString(),
                             storeTitle: e.store.name,

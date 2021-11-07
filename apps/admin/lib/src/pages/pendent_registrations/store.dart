@@ -46,17 +46,21 @@ class Rep {
   final f = FirebaseFirestore.instance;
 
   Stream<List<StoreOrderInfo>> pending(String franchiseId) => f
-          .collection(Franchise.collection)
-          .doc(franchiseId)
-          .collection(Store.collection)
-          .where('authorized', isEqualTo: false)
-          .snapshots()
-          .map((event) => event.docs
-            .map((e) => StoreOrderInfo.fromMap(e.id, e.data(), franchiseId))
-            .toList());
+      .collection(Franchise.collection)
+      .doc(franchiseId)
+      .collection(Store.collection)
+      .where('authorized', isEqualTo: false)
+      .snapshots()
+      .map((event) => event.docs.map((e) {
+            StoreOrderInfo.franchiseId = e.data()['franchiseId'];
+            return StoreOrderInfo.fromMap(e.id, e.data());
+          }).toList());
 
   aprove(String franchiseId, StoreOrderInfo store) {
-    f.collection(Store.collection).doc(store.id).set(store.toMap());
+    f
+        .collection(Store.collection)
+        .doc(store.id)
+        .set(store.toMap()); //TODO: Remover do motoboy também
 
     f
         .collection(Franchise.collection)

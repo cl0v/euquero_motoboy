@@ -53,7 +53,10 @@ class Rep {
       .where('authorized', isEqualTo: false)
       .snapshots()
       .map((event) => event.docs
-          .map((e) => MotoboyOrderInfo.fromMap(e.id, e.data(), franchiseId))
+          .map((e) {
+            MotoboyOrderInfo.franchiseId = e.data()['franchiseId'];
+            return MotoboyOrderInfo.fromMap(e.id, e.data());
+          })
           .toList());
 
   aprove(String franchiseId, MotoboyOrderInfo motoboy) {

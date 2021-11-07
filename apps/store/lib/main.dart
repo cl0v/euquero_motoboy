@@ -35,8 +35,7 @@ class MyApp extends StatelessWidget {
               //TODO: Tratar possíveis erros
 
               final RequestRepository repository = RequestRepository(
-                id: store.id,
-                franchiseId: store.franchiseId,
+                uid: store.id,
               );
 
               return RequestProvider(

@@ -58,7 +58,7 @@ class Repository implements IRegistration {
         .get();
 
     return r.docs.map((e) {
-      return Order.fromMap(e.data()..addAll({'id': e.reference.id}));
+      return Order.fromMap(e.reference.id, e.data());
     }).toList();
   }
 }

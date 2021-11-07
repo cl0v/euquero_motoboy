@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'src/repository.dart';
 
+//TODO: Adicionar funcionalidade de solicitação do pagamento.
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

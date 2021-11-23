@@ -32,21 +32,22 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
     return LoadingOverlay(
       isLoading: isLoading,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          label: Text('Solicitar pagamento'),
-          onPressed: total >= 100
-              ? () async {
-                  setState(() {
-                    isLoading = true;
-                  });
+        floatingActionButton: Visibility(
+          visible: total >= 100,
+          child: FloatingActionButton.extended(
+            label: Text('Solicitar pagamento'),
+            onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
 
-                  await controller.requestPayment(widget.itens);
+              await controller.requestPayment(widget.itens);
 
-                  setState(() {
-                    isLoading = false;
-                  });
-                }
-              : null,
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
         ),
         body: ListView(children: [
           Center(

@@ -6,8 +6,6 @@
 # Flutter/Dart/Pub related
 .firebase/
 analysis_options.yaml
-android/
-ios/
 web/
 .metadata
 .DS_Store

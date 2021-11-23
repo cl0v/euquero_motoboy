@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 ThemeData get darkTheme => ThemeData(
       scaffoldBackgroundColor: kBlackColor,
       primaryColor: kOrangeColor,
-      colorScheme: const ColorScheme.dark().copyWith(
-        secondary: kOrangeColor,
-        primary: Colors.white
-      ),
+      // colorScheme: const ColorScheme.dark().copyWith(
+      //   // secondary: kOrangeColor,
+      //   primary: Colors.white
+      // ),
       primarySwatch: Colors.deepOrange, // Testar isso
       buttonTheme: const ButtonThemeData(buttonColor: kOrangeColor),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
+      // elevatedButtonTheme: ElevatedButtonThemeData(
+      //     style: ButtonStyle(
             
-            foregroundColor: MaterialStateProperty.resolveWith((states) => kWhiteColor),
-            backgroundColor: MaterialStateProperty.resolveWith((states) => kOrangeColor),
+      //       foregroundColor: MaterialStateProperty.resolveWith((states) => kWhiteColor),
+      //       backgroundColor: MaterialStateProperty.resolveWith((states) => kOrangeColor),
 
-      )),
+      // )),
           textTheme: const TextTheme(),
         //   ElevatedButton.styleFrom(
         //     onSurface: kWhiteColor,

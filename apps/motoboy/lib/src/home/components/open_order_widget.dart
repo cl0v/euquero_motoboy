@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OpenOrderTileWidget extends StatelessWidget {
-  const OpenOrderTileWidget(this.storeTitle, this.storeAddress, this.total , this.onPressed,
+  const OpenOrderTileWidget(
+      this.storeTitle, this.storeAddress, this.total, this.onPressed,
       {Key? key})
       : super(key: key);
   final String storeTitle;
@@ -15,7 +16,7 @@ class OpenOrderTileWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         width: MediaQuery.of(context).size.width - 10,
-        height: 130,
+        // height: 130,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -65,17 +66,19 @@ class OpenOrderTileWidget extends StatelessWidget {
                 size: 15,
                 color: Colors.black,
               ),
+              NewText(
+                text: "Pegar: $storeAddress",
+                size: 15,
+                color: Colors.black,
+              ),
+              Divider(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  NewText(
-                    text: "Pegar: $storeAddress",
-                    size: 15,
-                    color: Colors.black,
-                  ),
                   ElevatedButton(
                     onPressed: onPressed,
                     child: NewText(
+                      size: 12,
                       text: "Aceitar",
                       bold: FontWeight.bold,
                       color: Colors.white,
@@ -92,12 +95,12 @@ class OpenOrderTileWidget extends StatelessWidget {
 }
 
 class NewText extends StatelessWidget {
-  final text;
-  final color;
-  final size;
-  final bold;
+  final String text;
+  final Color color;
+  final double size;
+  final FontWeight? bold;
 
-  const NewText({Key? key, this.text, this.color, this.size, this.bold})
+  const NewText({Key? key, required this.text, required this.color, this.size = 15, this.bold})
       : super(key: key);
 
   @override

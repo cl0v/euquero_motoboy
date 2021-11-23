@@ -47,6 +47,8 @@ class _PricesPageState extends State<PricesPage> {
           child: TextFieldWidget(
             labelText: 'Valor',
             controller: valorController,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
           ),
         ),
       ),

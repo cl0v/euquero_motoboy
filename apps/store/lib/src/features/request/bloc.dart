@@ -5,7 +5,7 @@ import 'package:store/src/features/request/states.dart';
 // O frete vai ter que ter um bloc próprio para exibir as alterações de preço
 // Bloc nada mais é do que as alterações que acontecem na página
 
-class RequestBloc extends SimpleBloc<RequestState> {
+class RequestBloc extends Bloc<RequestState> {
   RequestBloc({
     required this.store,
     required this.repository,
@@ -27,13 +27,12 @@ class RequestBloc extends SimpleBloc<RequestState> {
 
   _init() async {
     //TODO: Refazer
-    frete = await repository.fetchFreteValue(store.franchiseId);
+    frete = await repository.fetchFreteValue();
   }
 
   requestDelivery() async {
     await repository.requestMotoboy(
       Order(
-        franchiseId: store.franchiseId,
         valorPedido: value,
         valorFrete: valorFrete,
         store: store,

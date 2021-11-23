@@ -1,17 +1,16 @@
-
 import '../address.dart';
 import '../dados_bancarios.dart';
 import 'user.dart';
 
 class Store extends UserData {
-static const collection = 'store';
+  static const collection = 'store';
   final Address address;
 
   Store({
     required String name,
     required String cnpj, // doc
     required String phone,
-    required String franchiseId,
+    required bool authorized,
     required num taxaCobrada,
     required DadosBancarios dadosBancarios,
     required this.address,
@@ -19,10 +18,19 @@ static const collection = 'store';
           name: name,
           document: cnpj,
           phone: phone,
-          franchiseId: franchiseId,
+          authorized: authorized,
           taxaCobrada: taxaCobrada,
           dadosBancarios: dadosBancarios,
         );
+
+  Map<String, dynamic> toStoreOrderInfo(String franchiseId) {
+    return {
+      'name': name,
+      'franchiseId': franchiseId,
+      'phone': phone,
+      'address': address.toMap(),
+    };
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -30,7 +38,7 @@ static const collection = 'store';
       'cnpj': document,
       'name': name,
       'phone': phone,
-      'franchiseId': franchiseId,
+      'authorized': authorized,
       'address': address.toMap(),
       'taxaCobrada': taxaCobrada,
       'dadosBancarios': dadosBancarios.toMap(),
@@ -42,30 +50,29 @@ class StoreOrderInfo {
   StoreOrderInfo({
     required this.id,
     required this.name,
-    required this.franchiseId,
     required this.phone,
     required this.address,
   });
 
   final String id;
   final String name;
-  final String franchiseId;
+   static String franchiseId = '';
   final String phone;
   final Address address;
 
-  factory StoreOrderInfo.fromMap(Map<String, dynamic> map) {
+  /// Recebido na hora de se logar (top-level)
+  factory StoreOrderInfo.fromMap(String id, Map<String, dynamic> map) {
     return StoreOrderInfo(
-      id: map['id'],
+      id: id,
       name: map['name'],
-      franchiseId: map['franchiseId'],
       phone: map['phone'],
       address: Address.fromMap(map['address']),
     );
   }
 
+  /// Enviado na hora de cadastrar (top-level)
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'franchiseId': franchiseId,
       'phone': phone,
@@ -73,5 +80,23 @@ class StoreOrderInfo {
     };
   }
 
-  
+  /// Recebe o mapa dentro do pedido
+  factory StoreOrderInfo.fromOrderMap(Map<String, dynamic> map) {
+    return StoreOrderInfo(
+      id: map['id'],
+      name: map['name'],
+      phone: map['phone'],
+      address: Address.fromMap(map['address']),
+    );
+  }
+
+  /// Envia dentro do pedido
+  Map<String, dynamic> toOrderMap() {
+    return {
+      'id': id,
+      'name': name,
+      'phone': phone,
+      'address': address.toMap(),
+    };
+  }
 }

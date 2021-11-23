@@ -8,6 +8,7 @@
 android/
 ios/
 web/
+.idea/
 .metadata
 .DS_Store
 pubspec.lock

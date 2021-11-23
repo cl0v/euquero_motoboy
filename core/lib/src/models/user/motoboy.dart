@@ -1,7 +1,7 @@
+import 'dart:convert';
 
 import '../dados_bancarios.dart';
 import 'user.dart';
-
 
 class Motoboy extends UserData {
   static const collection = 'motoboy';
@@ -11,29 +11,26 @@ class Motoboy extends UserData {
     required String name,
     required String cpf,
     required String phone,
-    required String franchiseId,
+    required bool authorized,
     required double taxaCobrada,
     required DadosBancarios dadosBancarios,
     required this.placaDaMoto,
   }) : super(
           name: name,
           document: cpf,
+          authorized: authorized,
           phone: phone,
-          franchiseId: franchiseId,
           taxaCobrada: taxaCobrada,
           dadosBancarios: dadosBancarios,
         );
 
-  // factory Motoboy.fromMap(Map<String, dynamic> map) {
-  //   return Motoboy(
-  //     name: map['name'],
-  //     cpf: map['cpf'],
-  //     phone: map['phone'],
-  //     placaDaMoto: map['placaDaMoto'],
-  //     taxaCobrada: map['taxaCobrada'],
-  //     dadosBancarios: DadosBancarios.fromMap(map['dadosBancarios']),
-  //   );
-  // }
+  Map<String, dynamic> toMotoboyOrderInfo(String franchiseId) {
+    return {
+      'name': name,
+      'phone': phone,
+      'franchiseId': franchiseId,
+    };
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -41,14 +38,13 @@ class Motoboy extends UserData {
       'name': name,
       'cpf': document,
       'phone': phone,
-      'franchiseId': franchiseId,
+      'authorized': authorized,
       'placaDaMoto': placaDaMoto,
       'taxaCobrada': taxaCobrada,
       'dadosBancarios': dadosBancarios.toMap(),
     };
   }
 }
-
 
 class MotoboyOrderInfo {
   MotoboyOrderInfo({
@@ -59,9 +55,11 @@ class MotoboyOrderInfo {
 
   final String id;
   final String name;
+  static String franchiseId = '';
+
   final String phone;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toOrderMap() {
     return {
       'id': id,
       'name': name,
@@ -69,7 +67,7 @@ class MotoboyOrderInfo {
     };
   }
 
-  factory MotoboyOrderInfo.fromMap(Map<String, dynamic> map) {
+  factory MotoboyOrderInfo.fromOrderMap(Map<String, dynamic> map) {
     return MotoboyOrderInfo(
       id: map['id'],
       name: map['name'],
@@ -77,5 +75,22 @@ class MotoboyOrderInfo {
     );
   }
 
-  
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'franchiseId': franchiseId,
+      'phone': phone,
+    };
+  }
+
+  factory MotoboyOrderInfo.fromMap(
+    String id,
+    Map<String, dynamic> map,
+  ) {
+    return MotoboyOrderInfo(
+      id: id,
+      name: map['name'],
+      phone: map['phone'],
+    );
+  }
 }

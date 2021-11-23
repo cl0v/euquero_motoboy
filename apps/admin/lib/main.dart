@@ -1,8 +1,12 @@
-import 'package:admin/src/views/dashboard.dart';
+import 'package:admin/src/pages/home/view.dart';
 import 'package:authenticator/authenticator.dart';
 import 'package:dependences/dependences.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+
+import 'src/repository.dart';
+
+//TODO: Adicionar funcionalidade de solicitação do pagamento.
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +35,14 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationPage(onLogin: (id) async{
-      //TODO: Implementar sistema de login por franquia
-      return DashboardPage(id);
-    });
+    return AuthenticationPage(
+      onLogin: (id) async {
+        //TODO: Implementar sistema de login por franquia
+        return HomePage(repository: Repository(id));
+      },
+      onCreate: () async {
+        return Container();
+      },
+    );
   }
 }

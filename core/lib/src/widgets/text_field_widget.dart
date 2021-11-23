@@ -7,11 +7,13 @@ class TextFieldWidget extends StatelessWidget {
       this.validator,
       this.keyboardType,
       this.onChanged,
+      this.textInputAction,
       this.obscureText = false,
       required this.controller})
       : super(key: key);
 
   final String labelText;
+  final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -21,6 +23,7 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: textInputAction,
       obscureText: obscureText,
       keyboardType: keyboardType,
       decoration: InputDecoration(

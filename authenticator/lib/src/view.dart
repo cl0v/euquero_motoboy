@@ -1,10 +1,14 @@
 import 'package:authenticator/src/user_auth.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+//TODO: Adicionar tela de carregamento
 class AuthenticationPage extends StatelessWidget {
-  AuthenticationPage({Key? key, required this.onLogin}) : super(key: key);
+  AuthenticationPage({Key? key, required this.onLogin, required this.onCreate}) : super(key: key);
   final Future<Widget> Function(String id) onLogin;
+  final Future<Widget> Function() onCreate;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -12,10 +16,12 @@ class AuthenticationPage extends StatelessWidget {
   final UserAuth auth = UserAuth();
 
   _onLogin(context) async {
-    final id = await auth.login(emailController.text, passwordController.text);
-    if (id == null)
+    try {
+      await auth.login(emailController.text, passwordController.text);
+    } catch (e) {
       return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Login incorreto!')));
+          .showSnackBar(SnackBar(content: Text('Usuario ou senha inválido!')));
+    }
   }
 
   @override
@@ -25,60 +31,55 @@ class AuthenticationPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Scaffold(
-              body: SafeArea(
-                  child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/login.png",
-                      fit: BoxFit.fill,
-                    ),
-                    SizedBox(
-                      height: 100,
-                    ),
-                    NewTextField(
-                      controller: emailController,
-                      obscure: false,
-                      hint: "Digite seu email",
-                      label: "Email",
-                    ),
-                    NewTextField(
-                      controller: passwordController,
-                      obscure: true,
-                      hint: "Digite sua senha",
-                      label: "Senha",
-                    ),
-                    Divider(
-                      height: 50,
-                    ),
-                    NewButton(
-                      fontSize: 14,
-                      text: "Login",
-                      onTap: () => _onLogin(context),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Não tem conta?   "),
-                        TextButton(
-                          onPressed: () =>
-                              launch("https://wa.me/553584633939?text=Cadartrar-me"),
-                          child: Text(
-                            "Cadastrar!",
-                            style: TextStyle(color: Colors.orange),
-                          ),
+              body: ListView(
+                children: [
+                  Image.asset(
+                    "assets/login.png",
+                    fit: BoxFit.fill,
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
+                  NewTextField(
+                    controller: emailController,
+                    obscure: false,
+                    hint: "Digite seu email",
+                    label: "Email",
+                  ),
+                  NewTextField(
+                    controller: passwordController,
+                    obscure: true,
+                    hint: "Digite sua senha",
+                    label: "Senha",
+                  ),
+                  Divider(
+                    height: 50,
+                  ),
+                  NewButton(
+                    fontSize: 14,
+                    text: "Login",
+                    onTap: () => _onLogin(context),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Não tem conta?   "),
+                      TextButton(
+                        onPressed: () async => push(context, await onCreate.call()),
+                        //() => launch(
+                          //  "https://wa.me/553584633939?text=Cadartrar-me"),
+                        child: Text(
+                          "Cadastrar!",
+                          style: TextStyle(color: Colors.orange),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
           return FutureBuilder<Widget>(
@@ -87,29 +88,13 @@ class AuthenticationPage extends StatelessWidget {
                 if (snap.data != null)
                   return snap.data!;
                 else
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
               });
         });
-  }
-}
-
-class NewText extends StatelessWidget {
-  final text;
-  final color;
-  final size;
-  final bold;
-
-  const NewText({Key? key, this.text, this.color, this.size, this.bold})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(color: color, fontSize: size, fontWeight: bold),
-    );
   }
 }
 
@@ -146,13 +131,13 @@ class NewButton extends StatelessWidget {
 }
 
 class NewTextField extends StatelessWidget {
-  final obscure;
-  final label;
-  final hint;
-  final controller;
+  final bool obscure;
+  final String? label;
+  final String? hint;
+  final TextEditingController? controller;
 
   const NewTextField(
-      {Key? key, this.obscure, this.label, this.hint, this.controller})
+      {Key? key, required this.obscure, this.label, this.hint, this.controller})
       : super(key: key);
 
   @override

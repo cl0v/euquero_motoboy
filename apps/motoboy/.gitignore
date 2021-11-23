@@ -9,12 +9,8 @@ analysis_options.yaml
 web/
 .metadata
 .DS_Store
-pubspec.lock
-analysis_options.yaml
 **/doc/api/
 .dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
 .fvm/
 .packages
 .pub-cache/
